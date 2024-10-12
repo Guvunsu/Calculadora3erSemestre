@@ -190,7 +190,7 @@ public class Calculadora : MonoBehaviour {
 
         Gizmos.color = Color.white;
         Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(0)); // Primer vector ortogonalizado
-        Gizmos.color = Color.black;
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(1));
         Gizmos.color = Color.gray;
         Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(2));
