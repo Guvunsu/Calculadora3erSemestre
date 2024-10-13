@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Calculadora : MonoBehaviour {
     #region Variasbles
 
-    [SerializeField] InputField m_inputField;
-    [SerializeField] Text _historialTexto;
+    [SerializeField] TMP_InputField m_inputField;
+    [SerializeField] TMP_InputField _historialTMP;
     List<string> m_historialCalculoAnteriorTexto = new List<string>();
 
     #endregion Variables
@@ -17,7 +18,7 @@ public class Calculadora : MonoBehaviour {
     #region Funciones Publicas
 
     void Start() {
-        _historialTexto.text = "Historial:  \n";
+        _historialTMP.text = "Historial:  \n";
         ///on= InputField , End= EndEditEvent Edit= InputField.onEndEdit {get , set;} me ayudo chatgpt para hacer el inputfield
         //// Agregar el listener para procesar la entrada del usuario
         m_inputField.onEndEdit.AddListener(procesamientoLogicoInput);
@@ -134,9 +135,9 @@ public class Calculadora : MonoBehaviour {
     /// me ayudara a actualizar el historial en texto en la visualizacion del canvas
     /// </summary>
     void actualizacionHistorialTexto() {
-        _historialTexto.text = "Historial:  \n ";
+        _historialTMP.text = "Historial:  \n ";
         foreach (string calculoImprida in m_historialCalculoAnteriorTexto) {
-            _historialTexto.text += calculoImprida + "\n";
+            _historialTMP.text += calculoImprida + "\n";
         }
     }
 
