@@ -5,7 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+/// <summary>
+/// checar en mi celular la logica poara mis gizmos y para mi inputfield pára luego impolemetarlo , y mejorar mi input field de mi escena de juego para luego hacerlo por partes las operaciones 
+/// </summary>
 public class Calculadora : MonoBehaviour {
     #region Variasbles
 
