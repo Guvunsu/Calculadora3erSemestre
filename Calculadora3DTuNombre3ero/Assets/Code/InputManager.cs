@@ -4,20 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class InputManager : MonoBehaviour
-{
-    InputField inputField;
-    Text texto;
-    TextMeshPro text;
+public class InputManager : MonoBehaviour {
+    [SerializeField] InputField inputField;
+    [SerializeField] Text texto;
+    [SerializeField] TextMeshPro text;
     [SerializeField] ScriptableObject script;
 
-    public void inputUser()
-    {
+    public void inputUser() {
         string userInput = inputField.text;
         texto.text = "Operacion" + userInput;
-       // FindObjectOfType<Calculadora>(userInput);
+        // FindObjectOfType<Calculadora>(userInput);
 
-       
+
     }
 
 }
