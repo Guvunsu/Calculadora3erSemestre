@@ -1,206 +1,266 @@
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-/// <summary>
-/// checar en mi celular la logica poara mis gizmos y para mi inputfield pára luego impolemetarlo , y mejorar mi input field de mi escena de juego para luego hacerlo por partes las operaciones y hacer las funciones de sumar , restar , multiplicar , dividir , etc 
-/// </summary>
-public class Calculadora : MonoBehaviour {
-    #region Variasbles
 
+
+public class Calculadora : MonoBehaviour {
+    #region Variables
     [SerializeField] TMP_InputField m_inputField;
     [SerializeField] TMP_InputField _historialTMP;
+    [SerializeField] Button[] operationButtons;
+    [SerializeField] private GameObject panelSumaVectores;
+    [SerializeField] private GameObject panelRestaVectores;
+    [SerializeField] private GameObject panelProductoPunto;
+    [SerializeField] private GameObject panelProductoCruz;
+    [SerializeField] private GameObject panelMagnitud;
+    [SerializeField] private GameObject panelNormalizar;
+    [SerializeField] private GameObject panelTransponer;
+    [SerializeField] private GameObject panelDeterminante;
+    [SerializeField] private GameObject panelDescomposicion;
+    [SerializeField] private GameObject panelOrtogonalizacion;
+    [SerializeField] private GameObject panelSumaMatrices;
+    [SerializeField] private GameObject panelRestaMatrices;
+    [SerializeField] private GameObject panelMultiplicacionMatrices;
+
+    private List<TMP_InputField> inputFieldsList = new List<TMP_InputField>();
     List<string> m_historialCalculoAnteriorTexto = new List<string>();
 
+    // Para almacenar los vectores y matrices que se dibujarán en Gizmos
+    private Vector3? vectorA = null;
+    private Vector3? vectorB = null;
+    private Matrix4x4? matrixA = null;
+    private Matrix4x4? matrixB = null;
     #endregion Variables
 
-    #region Funciones Publicas
-
+    #region Funciones Start Update
     void Start() {
         _historialTMP.text = "Historial:  \n";
-        ///on= InputField , End= EndEditEvent Edit= InputField.onEndEdit {get , set;} me ayudo chatgpt para hacer el inputfield
-        //// Agregar el listener para procesar la entrada del usuario
         m_inputField.onEndEdit.AddListener(procesamientoLogicoInput);
+        InitializeUI();
     }
+
     void Update() {
 
     }
+    #endregion Funciones Start Update
 
-    #region Operaciones Matematicas 
+    #region Funciones para el análisis del texto y botones
+    void InitializeUI() {
+        // Asignacion de cada botón a su función específica
+        operationButtons[0].onClick.AddListener(() => MostrarPanel("SumaVectores"));
+        operationButtons[1].onClick.AddListener(() => MostrarPanel("RestaVectores"));
+        operationButtons[2].onClick.AddListener(() => MostrarPanel("ProductoPunto"));
+        operationButtons[3].onClick.AddListener(() => MostrarPanel("ProductoCruz"));
+        operationButtons[4].onClick.AddListener(() => MostrarPanel("Magnitud"));
+        operationButtons[5].onClick.AddListener(() => MostrarPanel("Normalizar"));
+        operationButtons[6].onClick.AddListener(() => MostrarPanel("Transponer"));
+        operationButtons[7].onClick.AddListener(() => MostrarPanel("Determinante"));
+        operationButtons[8].onClick.AddListener(() => MostrarPanel("Descomposicion"));
+        operationButtons[9].onClick.AddListener(() => MostrarPanel("Ortogonalizacion"));
+        operationButtons[10].onClick.AddListener(() => MostrarPanel("SumaMatrices"));
+        operationButtons[11].onClick.AddListener(() => MostrarPanel("RestaMatrices"));
+        operationButtons[12].onClick.AddListener(() => MostrarPanel("MultiplicacionMatrices"));
+    }
 
-    public Vector3 VectorSuma(Vector3 vectorA, Vector3 vectorB) {
-        return vectorA + vectorB;
-    }
-    public Vector3 VectorResta(Vector3 vectorA, Vector3 vectorB) {
-        return vectorA - vectorB;
-    }
-    public Vector3 MultiplicarPorEscalar(Vector3 vector, float escalar) {
-        return vector * escalar;
-    }
-    public Vector3 ProductoCruz(Vector3 vectorA, Vector3 vectorB) {
-        return Vector3.Cross(vectorA, vectorB);
-    }
-    public float ProductoPunto(Vector3 vectorA, Vector3 vectorB) {
-        return Vector3.Dot(vectorA, vectorB);
-    }
-    public float AnguloEntreVectores(Vector3 vectorA, Vector3 vectorB) {
-        return Vector3.Angle(vectorA, vectorB);
-    }
-    public float Magnitud(Vector3 vector) {
-        return vector.magnitude;
-    }
-    public Vector3 Normalizar(Vector3 vector) {
-        return vector.normalized;
-    }
-    public Vector3 Proyeccion(Vector3 vectorA, Vector3 vectorB) {
-        return Vector3.Project(vectorA, vectorB);
-    }
-    public void Descomposicion(Vector3 vectorA, Vector3 vectorB, out Vector3 componenteParalela, out Vector3 componenteOrtogonal) {
-        componenteParalela = Vector3.Project(vectorA, vectorB);
-        componenteOrtogonal = vectorA - componenteParalela;
-    }
-    public Vector3[] OrtogonalizaciónGramSchmidt(Vector3[] vectores) {
-        Vector3[] ortogonalizados = new Vector3[vectores.Length];
-        ortogonalizados[0] = vectores[0];
+    //para mostrar el panel de la operación seleccionada
+    void MostrarPanel(string operacion) {
+        OcultarTodosLosPaneles();
 
-        for (int i = 1; i < vectores.Length; i++) {
-            ortogonalizados[i] = vectores[i];
-            for (int j = 0; j < i; j++) {
-                ortogonalizados[i] -= Vector3.Project(ortogonalizados[i], ortogonalizados[j]);
-            }
+        // Mostrar el panel correspondiente a la operación
+        switch (operacion) {
+            case "SumaVectores":
+                panelSumaVectores.SetActive(true);
+                break;
+            case "RestaVectores":
+                panelRestaVectores.SetActive(true);
+                break;
+            case "ProductoPunto":
+                panelProductoPunto.SetActive(true);
+                break;
+            case "ProductoCruz":
+                panelProductoCruz.SetActive(true);
+                break;
+            case "Magnitud":
+                panelMagnitud.SetActive(true);
+                break;
+            case "Normalizar":
+                panelNormalizar.SetActive(true);
+                break;
+            case "Transponer":
+                panelTransponer.SetActive(true);
+                break;
+            case "Determinante":
+                panelDeterminante.SetActive(true);
+                break;
+            case "Descomposicion":
+                panelDescomposicion.SetActive(true);
+                break;
+            case "Ortogonalizacion":
+                panelOrtogonalizacion.SetActive(true);
+                break;
+            case "SumaMatrices":
+                panelSumaMatrices.SetActive(true);
+                break;
+            case "RestaMatrices":
+                panelRestaMatrices.SetActive(true);
+                break;
+            case "MultiplicacionMatrices":
+                panelMultiplicacionMatrices.SetActive(true);
+                break;
         }
-
-        return ortogonalizados;
-    }
-    public Matrix4x4 SumarMatrices(Matrix4x4 matrizA, Matrix4x4 matrizB) {
-        Matrix4x4 resultado = new Matrix4x4();
-
-        // Sumar cada elemento de la matriz
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                resultado[i, j] = matrizA[i, j] + matrizB[i, j];
-            }
-        }
-
-        return resultado;
-    }
-    public Matrix4x4 RestarMatrices(Matrix4x4 matrizA, Matrix4x4 matrizB) {
-        Matrix4x4 resultado = new Matrix4x4();
-
-        // Restar cada elemento de la matriz
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                resultado[i, j] = matrizA[i, j] - matrizB[i, j];
-            }
-        }
-
-        return resultado;
-    }
-    public Matrix4x4 MultiplicarMatrices(Matrix4x4 matrizA, Matrix4x4 matrizB) {
-        return matrizA * matrizB;
-    }
-    public Matrix4x4 TransponerMatriz(Matrix4x4 matriz) {
-        return matriz.transpose;
-    }
-    public float Determinante3x3(Matrix4x4 matriz) {
-        return matriz.m00 * (matriz.m11 * matriz.m22 - matriz.m21 * matriz.m12) -
-               matriz.m01 * (matriz.m10 * matriz.m22 - matriz.m20 * matriz.m12) +
-               matriz.m02 * (matriz.m10 * matriz.m21 - matriz.m20 * matriz.m11);
-    }
-    public Matrix4x4 InversaGaussJordan(Matrix4x4 matriz) {
-        return matriz.inverse;
     }
 
+    void OcultarTodosLosPaneles() {
+        panelSumaVectores.SetActive(false);
+        panelRestaVectores.SetActive(false);
+        panelProductoPunto.SetActive(false);
+        panelProductoCruz.SetActive(false);
+        panelMagnitud.SetActive(false);
+        panelNormalizar.SetActive(false);
+        panelTransponer.SetActive(false);
+        panelDeterminante.SetActive(false);
+        panelDescomposicion.SetActive(false);
+        panelOrtogonalizacion.SetActive(false);
+        panelSumaMatrices.SetActive(false);
+        panelRestaMatrices.SetActive(false);
+        panelMultiplicacionMatrices.SetActive(false);
+    }
 
-    #endregion Operaciones Matematicas
-
-    #endregion Funciones Publicas
-
-
-    #region Funciones Privadas
-
-    /// <summary>
-    /// lo que ara principalmente es tomar , analaizar y ejecutar lo que el usuario agrega en el texto 
-    /// llamara mi funcion donde se actualizara el historial almacenandolo en otro texto
-    ///  y me ayuda a limpiar mi texto de la entrada principal
-    /// </summary>
-    /// <param name="usuarioInput"></param>
     void procesamientoLogicoInput(string usuarioInput) {
         m_historialCalculoAnteriorTexto.Add(usuarioInput);
         actualizacionHistorialTexto();
         m_inputField.text = "";
     }
 
-    /// <summary>
-    /// me ayudara a actualizar el historial en texto en la visualizacion del canvas
-    /// </summary>
     void actualizacionHistorialTexto() {
         _historialTMP.text = "Historial:  \n ";
         foreach (string calculoImprida in m_historialCalculoAnteriorTexto) {
             _historialTMP.text += calculoImprida + "\n";
         }
     }
+    #endregion  Funciones para el análisis del texto y botones
 
-    /// <summary>
-    /// mi funcion para dibujar y colorear mis vectores y su resultado graficamente llamdo igual modo mis funciones matematicas
-    /// </summary>
-    void OnDrawGizmos() {
-        Vector3 vectorA = new Vector3(1, 2, 3);
-        Vector3 vectorB = new Vector3(4, 5, 6);
-
-        Vector3 suma = VectorSuma(vectorA, vectorB);
-        // me dibuja mis vectores A y B en verde
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(Vector3.zero, vectorA);
-        Gizmos.DrawLine(Vector3.zero, vectorB);
-        // el resultado de la suma en azul cyan 
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(Vector3.zero, suma);
-
-        // Resta de vectores
-        Vector3 resta = VectorResta(vectorA, vectorB);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(Vector3.zero, resta);
-
-        // Multiplicación escalar
-        float escalar = 2.0f;
-        Vector3 multiplicacionEscalar = MultiplicarPorEscalar(vectorA, escalar);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(Vector3.zero, multiplicacionEscalar);
-
-        // Producto cruz
-        Vector3 productoCruz = ProductoCruz(vectorA, vectorB);
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(Vector3.zero, productoCruz);
-
-        // Normalización del vector
-        Vector3 vectorNormalizado = Normalizar(vectorA);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(Vector3.zero, vectorNormalizado);
-
-        // Proyección de un vector sobre otro
-        Vector3 proyeccion = Proyeccion(vectorA, vectorB);
-        Gizmos.color = Color.gray;
-        Gizmos.DrawLine(Vector3.zero, proyeccion);
-
-        // Ortogonalización (Gram-Schmidt) CHATGPT
-        Matrix4x4 matrizOriginal = Matrix4x4.identity; // Puedes cambiar los valores por una matriz específica
-
-        // Aplicar la ortogonalización de Gram-Schmidt 
-        Matrix4x4 matrizOrtogonalizada = matrizOriginal; // AQUI LE MODIFIQUE PARA NO LLAMR A LA FUNCION 
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(0)); // Primer vector ortogonalizado
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(1));
-        Gizmos.color = Color.gray;
-        Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(2));
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(Vector3.zero, matrizOrtogonalizada.GetColumn(3)); // ultimo vector ortogonalizado
+    #region Operaciones Matemáticas
+    // Suma de vectores
+    public void SumarVectores(Vector3 v1, Vector3 v2) {
+        vectorA = v1;
+        vectorB = v2;
+        Vector3 resultado = v1 + v2;
+        MostrarResultado(resultado.ToString());
     }
 
-    #endregion Funciones Privadas
+    // Resta de vectores
+    public void RestarVectores(Vector3 v1, Vector3 v2) {
+        vectorA = v1;
+        vectorB = v2;
+        Vector3 resultado = v1 - v2;
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Producto punto
+    public void ProductoPunto(Vector3 v1, Vector3 v2) {
+        float resultado = Vector3.Dot(v1, v2);
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Producto cruzado
+    public void ProductoCruz(Vector3 v1, Vector3 v2) {
+        vectorA = v1;
+        vectorB = v2;
+        Vector3 resultado = Vector3.Cross(v1, v2);
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Magnitud
+    public void Magnitud(Vector3 v) {
+        float resultado = v.magnitude;
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Normalizar un vector
+    public void Normalizar(Vector3 v) {
+        Vector3 resultado = v.normalized;
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Transponer una matriz (Ejemplo con 2x2)
+    public void Transponer(Matrix4x4 matriz) {
+        matrixA = matriz;
+        Matrix4x4 resultado = Matrix4x4.Transpose(matriz);
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Determinante de una matriz 3x3
+    public void Determinante(Matrix4x4 matriz) {
+        matrixA = matriz;
+        float resultado = DeterminanteMatriz3x3(matriz);
+        MostrarResultado(resultado.ToString());
+    }
+    //determinante de una matriz 3x3
+    float DeterminanteMatriz3x3(Matrix4x4 matriz) {
+        float a = matriz[0, 0], b = matriz[0, 1], c = matriz[0, 2];
+        float d = matriz[1, 0], e = matriz[1, 1], f = matriz[1, 2];
+        float g = matriz[2, 0], h = matriz[2, 1], i = matriz[2, 2];
+
+        // Determinante de la matriz 3x3 usando la fórmula clásica
+        float determinante = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
+
+        return determinante;
+    }
+
+    // Descomposición de un vector en componentes paralela y ortogonal
+    public void Descomposicion(Vector3 v1, Vector3 v2) {
+        Vector3 componenteParalela = Vector3.Project(v1, v2);
+        Vector3 componenteOrtogonal = v1 - componenteParalela;
+        MostrarResultado($"Paralela: {componenteParalela}, Ortogonal: {componenteOrtogonal}");
+    }
+
+    // Ortogonalización de Gram-Schmidt (Ejemplo con un array de vectores)
+    public void Ortogonalizacion(Vector3[] vectores) {
+        // Implementación de Gram-Schmidt
+    }
+
+    // Suma de matrices (Ejemplo con matrices 2x2)
+    public void SumarMatrices(Matrix4x4 m1, Matrix4x4 m2) {
+        matrixA = m1;
+        matrixB = m2;
+        Matrix4x4 resultado = new Matrix4x4();
+
+        // Sumar elemento por elemento
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                resultado[i, j] = m1[i, j] + m2[i, j];
+            }
+        }
+
+        MostrarResultado(resultado.ToString());
+    }
+
+    // Mostrar el resultado de las operaciones
+    void MostrarResultado(string resultado) {
+        _historialTMP.text += resultado + "\n";
+    }
+    #endregion Operaciones Matemáticas
+
+    #region Dibujar Gizmos
+    void OnDrawGizmos() {
+        if (vectorA.HasValue) {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(Vector3.zero, vectorA.Value);
+        }
+
+        if (vectorB.HasValue) {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(Vector3.zero, vectorB.Value);
+        }
+
+        if (matrixA.HasValue) {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(matrixA.Value.GetColumn(0), matrixA.Value.GetColumn(1));
+        }
+    }
+    #endregion Dibujar Gizmos
 }
+
