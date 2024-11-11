@@ -8,6 +8,9 @@ using TMPro;
 public class Calculadora : MonoBehaviour {
     #region Variables
     [SerializeField] TMP_InputField m_inputField;
+    //[SerializeField] private TMP_InputField[] inputFieldsSumaVectores;
+    //[SerializeField] private TMP_InputField[] inputFieldsRestaVectores;
+    // agregar taaaal vez las demas operaciones y esto en las operaciones MostrarResultado(resultado.ToString());
     [SerializeField] TMP_InputField _historialTMP;
     [SerializeField] Button[] operationButtons;
     [SerializeField] private GameObject panelSumaVectores;
@@ -199,7 +202,7 @@ public class Calculadora : MonoBehaviour {
         MostrarResultado(resultado.ToString());
     }
     //determinante de una matriz 3x3
-    float DeterminanteMatriz3x3(Matrix4x4 matriz) {
+    public float DeterminanteMatriz3x3(Matrix4x4 matriz) {
         float a = matriz[0, 0], b = matriz[0, 1], c = matriz[0, 2];
         float d = matriz[1, 0], e = matriz[1, 1], f = matriz[1, 2];
         float g = matriz[2, 0], h = matriz[2, 1], i = matriz[2, 2];
@@ -239,7 +242,7 @@ public class Calculadora : MonoBehaviour {
     }
 
     // Mostrar el resultado de las operaciones
-    void MostrarResultado(string resultado) {
+    public void MostrarResultado(string resultado) {
         _historialTMP.text += resultado + "\n";
     }
     #endregion Operaciones Matemáticas
