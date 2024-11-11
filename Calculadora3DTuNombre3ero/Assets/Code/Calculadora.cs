@@ -144,7 +144,7 @@ public class Calculadora : MonoBehaviour {
         }
     }
     #endregion  Funciones para el análisis del texto y botones
-
+    // implementar las operaciones que nos dio el profe para implementarlas, estan en mi cuaderno
     #region Operaciones Matemáticas
     // Suma de vectores
     public void SumarVectores(Vector3 v1, Vector3 v2) {
