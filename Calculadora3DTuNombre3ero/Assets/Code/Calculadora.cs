@@ -144,74 +144,114 @@ public class Calculadora : MonoBehaviour {
         }
     }
     #endregion  Funciones para el análisis del texto y botones
+    // Mostrar el resultado de las operaciones
+    public void MostrarResultado(string resultado) {
+        _historialTMP.text += resultado + "\n";
+    }
     // implementar las operaciones que nos dio el profe para implementarlas, estan en mi cuaderno
     #region Operaciones Matemáticas
     // Suma de vectores
     public void SumarVectores(Vector3 v1, Vector3 v2) {
-        vectorA = v1;
-        vectorB = v2;
-        Vector3 resultado = v1 + v2;
-        MostrarResultado(resultado.ToString());
+        //    vectorA = v1;
+        //    vectorB = v2;
+        //    Vector3 resultado = v1 + v2;
+        //    MostrarResultado(resultado.ToString());
+        new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);//.Normalize ();
+        //MostrarResultado(resultado.ToString());
     }
 
     // Resta de vectores
     public void RestarVectores(Vector3 v1, Vector3 v2) {
-        vectorA = v1;
-        vectorB = v2;
-        Vector3 resultado = v1 - v2;
-        MostrarResultado(resultado.ToString());
+        /* vectorA = v1;
+         vectorB = v2;
+         Vector3 resultado = v1 - v2;
+         MostrarResultado(resultado.ToString());*/
+        new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
     }
 
     // Producto punto
     public void ProductoPunto(Vector3 v1, Vector3 v2) {
-        float resultado = Vector3.Dot(v1, v2);
+        /* float resultado = Vector3.Dot(v1, v2);
+         MostrarResultado(resultado.ToString());*/
+        float resultado = (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
         MostrarResultado(resultado.ToString());
+
     }
 
     // Producto cruzado
     public void ProductoCruz(Vector3 v1, Vector3 v2) {
-        vectorA = v1;
-        vectorB = v2;
-        Vector3 resultado = Vector3.Cross(v1, v2);
+        //vectorA = v1;
+        //vectorB = v2;
+        //Vector3 resultado = Vector3.Cross(v1, v2);
+        //MostrarResultado(resultado.ToString());
+        float x = (v1.y * v2.z) - (v1.z * v2.y);
+        float y = (v1.z * v2.x) - (v1.x * v2.z);
+        float z = (v1.x * v2.y) - (v1.y * v2.x);
+
+        Vector3 resultado = new Vector3(x, y, z);
         MostrarResultado(resultado.ToString());
     }
 
     // Magnitud
     public void Magnitud(Vector3 v) {
-        float resultado = v.magnitude;
+        //float resultado = v.magnitude;
+        //MostrarResultado(resultado.ToString());
+        float resultado = Mathf.Sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
         MostrarResultado(resultado.ToString());
     }
 
     // Normalizar un vector
     public void Normalizar(Vector3 v) {
-        Vector3 resultado = v.normalized;
-        MostrarResultado(resultado.ToString());
+        //Vector3 resultado = v.normalized;
+        //MostrarResultado(resultado.ToString());
+        float magnitud = Mathf.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+        if (magnitud > 0) {
+            MostrarResultado($"({v.x / magnitud}, {v.y / magnitud}, {v.z / magnitud})");
+        } else {
+            MostrarResultado("No se puede normalizar un vector de magnitud 0");
+        }
     }
 
     // Transponer una matriz (Ejemplo con 2x2)
     public void Transponer(Matrix4x4 matriz) {
-        matrixA = matriz;
-        Matrix4x4 resultado = Matrix4x4.Transpose(matriz);
-        MostrarResultado(resultado.ToString());
+        //matrixA = matriz;
+        //Matrix4x4 resultado = Matrix4x4.Transpose(matriz);
+        //MostrarResultado(resultado.ToString());
+        float[,] transpuesta = new float[3, 3];
+
+        // Intercambiar filas y columnas
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                transpuesta[i, j] = matriz[j, i];
+            }
+        }
+
+        // Mostrar la matriz transpuesta
+        string resultado = "Matriz Transpuesta:\n";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                resultado += transpuesta[i, j] + " ";
+            }
+            resultado += "\n";
+        }
+        MostrarResultado(resultado);
     }
 
     // Determinante de una matriz 3x3
     public void Determinante(Matrix4x4 matriz) {
-        matrixA = matriz;
-        float resultado = DeterminanteMatriz3x3(matriz);
-        MostrarResultado(resultado.ToString());
+        //matrixA = matriz;
+        //float resultado = DeterminanteMatriz3x3(matriz);
+        //MostrarResultado(resultado.ToString());
+
     }
     //determinante de una matriz 3x3
-    public float DeterminanteMatriz3x3(Matrix4x4 matriz) {
-        float a = matriz[0, 0], b = matriz[0, 1], c = matriz[0, 2];
-        float d = matriz[1, 0], e = matriz[1, 1], f = matriz[1, 2];
-        float g = matriz[2, 0], h = matriz[2, 1], i = matriz[2, 2];
+        public float Determinante3x3(float[,] matriz) {
+            float determinante = matriz[0, 0] * (matriz[1, 1] * matriz[2, 2] - matriz[1, 2] * matriz[2, 1])
+                               - matriz[0, 1] * (matriz[1, 0] * matriz[2, 2] - matriz[1, 2] * matriz[2, 0])
+                               + matriz[0, 2] * (matriz[1, 0] * matriz[2, 1] - matriz[1, 1] * matriz[2, 0]);
 
-        // Determinante de la matriz 3x3 usando la fórmula clásica
-        float determinante = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
-
-        return determinante;
-    }
+            return determinante;
+        }
 
     // Descomposición de un vector en componentes paralela y ortogonal
     public void Descomposicion(Vector3 v1, Vector3 v2) {
@@ -241,10 +281,6 @@ public class Calculadora : MonoBehaviour {
         MostrarResultado(resultado.ToString());
     }
 
-    // Mostrar el resultado de las operaciones
-    public void MostrarResultado(string resultado) {
-        _historialTMP.text += resultado + "\n";
-    }
     #endregion Operaciones Matemáticas
 
     #region Dibujar Gizmos
