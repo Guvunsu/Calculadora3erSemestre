@@ -151,12 +151,16 @@ public class Calculadora : MonoBehaviour {
     // implementar las operaciones que nos dio el profe para implementarlas, estan en mi cuaderno
     #region Operaciones Matemáticas
     // Suma de vectores
+
+    // hacer un metodo donde me llame estos metodos porque no jala al llamar vectores
+    // ponerlo en un gameObject vacio o en un monobehaviour que llame los valores 
+    // 
     public void SumarVectores(Vector3 v1, Vector3 v2) {
         //    vectorA = v1;
         //    vectorB = v2;
         //    Vector3 resultado = v1 + v2;
         //    MostrarResultado(resultado.ToString());
-        new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);//.Normalize ();
+        new Vector3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
         //MostrarResultado(resultado.ToString());
     }
 
