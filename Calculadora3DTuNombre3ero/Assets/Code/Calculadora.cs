@@ -5,6 +5,8 @@ using TMPro;
 
 public class Calculadora : MonoBehaviour {
     #region Variables
+    public OperacionesMatematicas matematicas;
+
     [SerializeField] private TMP_InputField m_inputField;
     [SerializeField] private TMP_InputField _historialTMP;
     [SerializeField] private Button[] operationButtons;
@@ -31,6 +33,12 @@ public class Calculadora : MonoBehaviour {
     [SerializeField] private GameObject panelConvertirAHomogeneas;
     [SerializeField] private GameObject panelRotacion2D;
     [SerializeField] private GameObject panelRotacion3D;
+    [SerializeField] private GameObject panelReflejoEscalar;
+    [SerializeField] private GameObject panelTransformacionRotacion;
+    [SerializeField] private GameObject panelMultiplicarMatrices;
+    [SerializeField] private GameObject panelRestarMatrices;
+    [SerializeField] private GameObject panelInterseccionTresPlanos;
+    [SerializeField] private GameObject panelInversaMatriz3x3;
 
     private List<string> historialCalculo = new List<string>();
 
@@ -82,7 +90,12 @@ public class Calculadora : MonoBehaviour {
         operationButtons[17].onClick.AddListener(() => MostrarPanel(panelRotacion2D));
         operationButtons[17].onClick.AddListener(() => MostrarPanel(panelRotacion3D));
         operationButtons[17].onClick.AddListener(() => MostrarPanel(panelConvertirAHomogeneas));
-
+        operationButtons[17].onClick.AddListener(() => MostrarPanel(panelReflejoEscalar));
+        operationButtons[17].onClick.AddListener(() => MostrarPanel(panelTransformacionRotacion));
+        operationButtons[17].onClick.AddListener(() => MostrarPanel(panelMultiplicarMatrices));
+        operationButtons[17].onClick.AddListener(() => MostrarPanel(panelRestarMatrices));
+        operationButtons[17].onClick.AddListener(() => MostrarPanel(panelInterseccionTresPlanos));
+        operationButtons[17].onClick.AddListener(() => MostrarPanel(panelInversaMatriz3x3));
     }
 
     private void MostrarPanel(GameObject panel) {
@@ -112,6 +125,12 @@ public class Calculadora : MonoBehaviour {
         panelConvertirAHomogeneas.SetActive(false);
         panelRotacion3D.SetActive(false);
         panelRotacion2D.SetActive(false);
+        panelReflejoEscalar.SetActive(false);
+        panelTransformacionRotacion.SetActive(false);
+        panelMultiplicarMatrices.SetActive(false);
+        panelRestarMatrices.SetActive(false);
+        panelInterseccionTresPlanos.SetActive(false);
+        panelInversaMatriz3x3.SetActive(false);
     }
     #endregion
 

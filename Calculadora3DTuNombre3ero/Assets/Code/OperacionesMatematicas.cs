@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,12 +57,12 @@ public class OperacionesMatematicas {
     }
 
     // Magnitud
-    public Vector3 Magnitud(Vector3 v) {
+    public float Magnitud(Vector3 v) {
         //float resultado = v.magnitude;
         //MostrarResultado(resultado.ToString());
         float resultado = Mathf.Sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
         //MostrarResultado(resultado.ToString());
-        return Vector3.zero;
+        return resultado; //chatgpt me reocmienda que me regrese un float que un vector3
     }
 
     // Normalizar un vector
@@ -260,5 +261,119 @@ public class OperacionesMatematicas {
         return new Vector4(v.x, v.y, v.z, 1); // Convertir a 4D (x, y, z, w)
     }
 
+
+
+
+
+
+    public float ReflejoEscalar(float valor, float referencia) {
+        return 2 * referencia - valor;
+    }
+    public Vector4 TransformacionRotacion(Vector4 vector, Matrix4x4 matrizRotacion) {
+        Vector4 resultado = new Vector4(
+            vector.x * matrizRotacion[0, 0] + vector.y * matrizRotacion[0, 1] + vector.z * matrizRotacion[0, 2] + vector.w * matrizRotacion[0, 3],
+            vector.x * matrizRotacion[1, 0] + vector.y * matrizRotacion[1, 1] + vector.z * matrizRotacion[1, 2] + vector.w * matrizRotacion[1, 3],
+            vector.x * matrizRotacion[2, 0] + vector.y * matrizRotacion[2, 1] + vector.z * matrizRotacion[2, 2] + vector.w * matrizRotacion[2, 3],
+            vector.x * matrizRotacion[3, 0] + vector.y * matrizRotacion[3, 1] + vector.z * matrizRotacion[3, 2] + vector.w * matrizRotacion[3, 3]
+        );
+        return resultado;
+    }
+    public float[,] MultiplicarMatrices(float[,] matrizA, float[,] matrizB) {
+        int filasA = matrizA.GetLength(0);
+        int columnasA = matrizA.GetLength(1);
+        int filasB = matrizB.GetLength(0);
+        int columnasB = matrizB.GetLength(1);
+
+        if (columnasA != filasB) {
+            throw new InvalidOperationException("Las matrices no son multiplicables.");
+        }
+
+        float[,] resultado = new float[filasA, columnasB];
+
+        for (int i = 0; i < filasA; i++) {
+            for (int j = 0; j < columnasB; j++) {
+                for (int k = 0; k < columnasA; k++) {
+                    resultado[i, j] += matrizA[i, k] * matrizB[k, j];
+                }
+            }
+        }
+
+        return resultado;
+    }
+    public float[,] RestarMatrices(float[,] matrizA, float[,] matrizB) {
+        if (matrizA.GetLength(0) != matrizB.GetLength(0) || matrizA.GetLength(1) != matrizB.GetLength(1)) {
+            throw new InvalidOperationException("Las dimensiones de las matrices deben ser iguales para restarlas.");
+        }
+
+        int filas = matrizA.GetLength(0);
+        int columnas = matrizA.GetLength(1);
+        float[,] resultado = new float[filas, columnas];
+
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                resultado[i, j] = matrizA[i, j] - matrizB[i, j];
+            }
+        }
+
+        return resultado;
+    }
+    public Vector3 InterseccionTresPlanos(Vector4 plano1, Vector4 plano2, Vector4 plano3) {
+        // Cada plano se define como Vector4(A, B, C, D) donde Ax + By + Cz + D = 0
+        Vector3 normal1 = new Vector3(plano1.x, plano1.y, plano1.z);
+        Vector3 normal2 = new Vector3(plano2.x, plano2.y, plano2.z);
+        Vector3 normal3 = new Vector3(plano3.x, plano3.y, plano3.z);
+
+        // Determinante de las normales (para verificar si los planos se cruzan en un punto)
+        float determinante = Vector3.Dot(normal1, Vector3.Cross(normal2, normal3));
+        if (Mathf.Abs(determinante) < 0.0001f) {
+            throw new InvalidOperationException("Los planos no se cruzan en un punto único.");
+        }
+
+        // Calcular el punto de intersección
+        Vector3 punto = (
+            -plano1.w * Vector3.Cross(normal2, normal3) -
+            plano2.w * Vector3.Cross(normal3, normal1) -
+            plano3.w * Vector3.Cross(normal1, normal2)
+        ) / determinante;
+
+        return punto;
+    }
+    public float[,] InversaMatriz3x3(float[,] matriz) {
+        if (matriz.GetLength(0) != 3 || matriz.GetLength(1) != 3) {
+            throw new InvalidOperationException("La matriz debe ser de 3x3.");
+        }
+
+        float determinante =
+            matriz[0, 0] * (matriz[1, 1] * matriz[2, 2] - matriz[1, 2] * matriz[2, 1]) -
+            matriz[0, 1] * (matriz[1, 0] * matriz[2, 2] - matriz[1, 2] * matriz[2, 0]) +
+            matriz[0, 2] * (matriz[1, 0] * matriz[2, 1] - matriz[1, 1] * matriz[2, 0]);
+
+        if (Mathf.Abs(determinante) < 0.0001f) {
+            throw new InvalidOperationException("La matriz no tiene inversa (determinante = 0).");
+        }
+
+        float[,] adjunta = new float[3, 3];
+
+        adjunta[0, 0] = matriz[1, 1] * matriz[2, 2] - matriz[1, 2] * matriz[2, 1];
+        adjunta[0, 1] = -(matriz[1, 0] * matriz[2, 2] - matriz[1, 2] * matriz[2, 0]);
+        adjunta[0, 2] = matriz[1, 0] * matriz[2, 1] - matriz[1, 1] * matriz[2, 0];
+
+        adjunta[1, 0] = -(matriz[0, 1] * matriz[2, 2] - matriz[0, 2] * matriz[2, 1]);
+        adjunta[1, 1] = matriz[0, 0] * matriz[2, 2] - matriz[0, 2] * matriz[2, 0];
+        adjunta[1, 2] = -(matriz[0, 0] * matriz[2, 1] - matriz[0, 1] * matriz[2, 0]);
+
+        adjunta[2, 0] = matriz[0, 1] * matriz[1, 2] - matriz[0, 2] * matriz[1, 1];
+        adjunta[2, 1] = -(matriz[0, 0] * matriz[1, 2] - matriz[0, 2] * matriz[1, 0]);
+        adjunta[2, 2] = matriz[0, 0] * matriz[1, 1] - matriz[0, 1] * matriz[1, 0];
+
+        float[,] inversa = new float[3, 3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                inversa[i, j] = adjunta[i, j] / determinante;
+            }
+        }
+
+        return inversa;
+    }
     #endregion Operaciones Matemáticas
 }
