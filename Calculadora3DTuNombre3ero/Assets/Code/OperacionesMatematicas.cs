@@ -20,7 +20,6 @@ public class OperacionesMatematicas {
         return v1 + v2; //le agrege esto para que la funcion me jalara
         //MostrarResultado(resultado.ToString());
     }
-
     // Resta de vectores
     public Vector3 RestarVectores(Vector3 v1, Vector3 v2) {
         /* vectorA = v1;
@@ -30,7 +29,6 @@ public class OperacionesMatematicas {
         new Vector3(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
         return v1 - v2;//mismo caso coin la suma 
     }
-
     // Producto punto
     public float ProductoPunto(Vector3 v1, Vector3 v2) {
         /* float resultado = Vector3.Dot(v1, v2);
@@ -40,7 +38,6 @@ public class OperacionesMatematicas {
         return resultado;
 
     }
-
     // Producto cruzado
     public Vector3 ProductoCruz(Vector3 v1, Vector3 v2) {
         //vectorA = v1;
@@ -55,7 +52,6 @@ public class OperacionesMatematicas {
         // MostrarResultado(resultado.ToString());
         return resultado;
     }
-
     // Magnitud
     public float Magnitud(Vector3 v) {
         //float resultado = v.magnitude;
@@ -64,7 +60,6 @@ public class OperacionesMatematicas {
         //MostrarResultado(resultado.ToString());
         return resultado; //chatgpt me reocmienda que me regrese un float que un vector3
     }
-
     // Normalizar un vector
     public Vector3 Normalizar(Vector3 v) {
         //Vector3 resultado = v.normalized;
@@ -79,7 +74,6 @@ public class OperacionesMatematicas {
             return Vector3.zero; // Devuelve un vector nulo
         }
     }
-
     // Transponer una matriz (Ejemplo con 2x2) //me la dio chatgpt
     public float[,] Transponer(float[,] matriz) {
         //matrixA = matriz;
@@ -95,15 +89,6 @@ public class OperacionesMatematicas {
 
         return transpuesta;
     }
-
-    // Determinante de una matriz 3x3
-    //public void Determinante(Matrix4x4 matriz) {
-    //    //matrixA = matriz;
-    //    //float resultado = DeterminanteMatriz3x3(matriz);
-    //    //MostrarResultado(resultado.ToString());
-
-    //}
-    //determinante de una matriz 3x3
     public float Determinante3x3(float[,] matriz) {
         float determinante = matriz[0, 0] * (matriz[1, 1] * matriz[2, 2] - matriz[1, 2] * matriz[2, 1])
                            - matriz[0, 1] * (matriz[1, 0] * matriz[2, 2] - matriz[1, 2] * matriz[2, 0])
@@ -111,7 +96,6 @@ public class OperacionesMatematicas {
 
         return determinante;
     }
-
     // Descomposición de un vector en componentes paralela y ortogonal
     // explicacion chatgpt
     public (Vector3, Vector3) Descomposicion(Vector3 v1, Vector3 v2) {
@@ -131,14 +115,11 @@ public class OperacionesMatematicas {
         // Regresamos las componentes paralela y ortogonal
         return (componenteParalela, componenteOrtogonal);
     }
-
-
-
-    // Ortogonalización de Gram-Schmidt (Ejemplo con un array de vectores)
+    // Ortogonalización de Gram-Schmidt 
+    //No le se joven, por eso no la hice, a ver si me acuerdo mientras hago ajustes 
     public void Ortogonalizacion(Vector3[] vectores) {
         // Implementación de Gram-Schmidt
     }
-
     // Suma de matrices (Ejemplo con matrices 2x2)
     public Matrix4x4 SumarMatrices(Matrix4x4 m1, Matrix4x4 m2) {
 
@@ -153,11 +134,6 @@ public class OperacionesMatematicas {
         //MostrarResultado(resultado.ToString());
         return resultado;
     }
-
-
-
-
-    //agregar paneles y botones 
     //Angulo Entre Vectores :3
     public float AnguloEntreVectores(Vector3 v1, Vector3 v2) {
         // Producto punto
@@ -173,12 +149,10 @@ public class OperacionesMatematicas {
         // Devolvemos el ángulo en grados
         return Mathf.Acos(cosenoAngulo) * Mathf.Rad2Deg;  // Convertir de radianes a grados
     }
-
     public Vector3 MultiplicarEscalar(Vector3 v, float escalar) {
         // Multiplicamos cada componente por el escalar
         return new Vector3(v.x * escalar, v.y * escalar, v.z * escalar);
     }
-
     public Vector3 Reflejar(Vector3 v, Vector3 n) {
         // Calculamos el producto punto entre el vector y la normal del plano
         float productoPunto = (v.x * n.x) + (v.y * n.y) + (v.z * n.z);
@@ -260,12 +234,6 @@ public class OperacionesMatematicas {
     public Vector4 ConvertirAHomogeneas(Vector3 v) {
         return new Vector4(v.x, v.y, v.z, 1); // Convertir a 4D (x, y, z, w)
     }
-
-
-
-
-
-
     public float ReflejoEscalar(float valor, float referencia) {
         return 2 * referencia - valor;
     }
