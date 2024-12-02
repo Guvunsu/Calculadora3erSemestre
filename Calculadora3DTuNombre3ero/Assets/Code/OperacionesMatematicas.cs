@@ -115,11 +115,50 @@ public class OperacionesMatematicas : MonoBehaviour {
         // Regresamos las componentes paralela y ortogonal
         return (componenteParalela, componenteOrtogonal);
     }
-    // Ortogonalización de Gram-Schmidt 
     //No le se joven, por eso no la hice, a ver si me acuerdo mientras hago ajustes 
-    public void Ortogonalizacion(Vector3[] vectores) {
-        // Implementación de Gram-Schmidt
+    //chatgpt al chile esas esstan cabronas
+    // Implementación de Gram-Schmidt
+    public List<Vector3> Ortogonalizacion(Vector3[] vectores) {
+
+        // Asumimos que el arreglo de vectores tiene al menos 2 vectores
+        // Si tienes más vectores, puedes extender el proceso.
+
+        // El primer vector ortogonal es simplemente el primer vector
+        Vector3 u1 = vectores[0];
+
+        // Creamos una lista para almacenar los vectores ortogonales resultantes
+        List<Vector3> ortogonales = new List<Vector3>();
+        ortogonales.Add(u1); // Agregamos el primer vector ortogonal
+
+        // Aplicamos el proceso de Gram-Schmidt a los vectores restantes
+        for (int i = 1; i < vectores.Length; i++) {
+            // Tomamos el siguiente vector v[i]
+            Vector3 v = vectores[i];
+
+            // Proyección de v sobre el vector u1
+            float productoPunto = (v.x * u1.x) + (v.y * u1.y) + (v.z * u1.z);
+            float magnitudU1Cuadrado = (u1.x * u1.x) + (u1.y * u1.y) + (u1.z * u1.z);
+            Vector3 proyeccionSobreU1 = new Vector3((productoPunto / magnitudU1Cuadrado) * u1.x,
+                                                     (productoPunto / magnitudU1Cuadrado) * u1.y,
+                                                     (productoPunto / magnitudU1Cuadrado) * u1.z);
+
+            // El siguiente vector ortogonal es el vector v menos la proyección sobre u1
+            Vector3 u2 = new Vector3(v.x - proyeccionSobreU1.x,
+                                      v.y - proyeccionSobreU1.y,
+                                      v.z - proyeccionSobreU1.z);
+
+            // Agregamos el nuevo vector ortogonal a la lista
+            ortogonales.Add(u2);
+
+            // Actualizamos u1 para el siguiente paso de la proyección (si tienes más vectores)
+            u1 = u2;
+        }
+
+        // Ahora, ortogonales contiene todos los vectores ortogonales generados
+        // Devuelvo la lista con los vectores ortogonales
+        return ortogonales;
     }
+
     // Suma de matrices (Ejemplo con matrices 2x2)
     public Matrix4x4 SumarMatrices(Matrix4x4 m1, Matrix4x4 m2) {
 
