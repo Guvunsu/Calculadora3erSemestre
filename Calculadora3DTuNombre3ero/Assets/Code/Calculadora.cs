@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Calculadora : MonoBehaviour {
     #region Variables
     public OperacionesMatematicas matematicas;
 
     //[SerializeField] private TMP_InputField m_inputField;
-    [SerializeField] private TMP_InputField _historialTMP;
-    [SerializeField] private Button[] operationButtons;
+
 
     // Paneles de operaciones
     [SerializeField] private GameObject panelSumaVectores;
@@ -40,125 +40,148 @@ public class Calculadora : MonoBehaviour {
     [SerializeField] private GameObject panelInterseccionTresPlanos;
     [SerializeField] private GameObject panelInversaMatriz3x3;
     [SerializeField] private GameObject panelSumarMatrices;
-
+    [SerializeField] private Text _historialTMP;
+    [SerializeField] private Button[] operationButtons;
     private List<string> historialCalculo = new List<string>();
 
     // Para dibujar en Gizmos
     private Vector3? vectorA = null;
     private Vector3? vectorB = null;
 
+    //LineRnederer
+    public Color color;
+    //public Material material;
+    private Transform head;
+    private Transform sphere;
     [SerializeField] InputField inputField;
-    [SerializeField] InputField inputField1;
-    [SerializeField] InputField inputField2;
-    [SerializeField] Text texto;
-    [SerializeField] TextMeshPro text;
-    [SerializeField] ScriptableObject script;
+    [SerializeField] InputField inputXField;
+    [SerializeField] InputField inputYField;
+    [SerializeField] InputField inputZField;
+    [SerializeField] InputField inputXField2;
+    [SerializeField] InputField inputYField2;
+    [SerializeField] InputField inputZField2;
+    [SerializeField] Text resultado;
+    [SerializeField] TextMeshPro resultados;
+
 
     #endregion
-
+    public void lineRender() {
+        sphere = transform.Find("Sphere");
+        sphere.localScale = 0.3f * Vector3.one;
+        head = transform.Find("Head");
+        head.localScale = 0.25f * Vector3.one;
+        GetComponent<LineRenderer>().widthMultiplier = 0.1f;
+        GetComponent<LineRenderer>().positionCount = 2;
+    }
     public void inputUser() {
-        //float result1 = 0, result2 = 0, result3 = 0;
-        //if (!float.TryParse(inputField[2].text, out result1))
-        //    result1 = 0;
-        //if (!float.TryParse(inputField1.text, out result2))
-        //    result2 = 0;
-        //if (!float.TryParse(inputField2.text, out result3))
-        //    result3 = 0;
-        //Vector3 v = new Vector3(result1, result2, result3);
-
-
-        //string userInput = inputField[2].text;
-        //texto.text = "Operacion" + userInput;
-        // FindObjectOfType<Calculadora>(userInput);
-        //hacerlo 3 veces para cada panel , si hay sumas por ejemplo llamar 2 de estas y 3 cuando hay matrices 3x3
-
-
-        // Inicializamos los resultados como 0. Estos valores se llenarán con los datos ingresados por el usuario.
-        float result1 = 0, result2 = 0, result3 = 0;
+        // son los datos ingresados por el usuario desde cero.
+        float result1 = 0, result2 = 0, result3 = 0, result4 = 0, result5 = 0, result6 = 0;
 
         // Intentamos parsear el tercer input field. Si falla, el valor resultará en 0.
-        if (!float.TryParse(inputField.text, out result1))
+        if (!float.TryParse(inputXField.text, out result1))
             result1 = 0;
 
         // Intentamos parsear el primer input field. Si falla, el valor resultará en 0.
-        if (!float.TryParse(inputField1.text, out result2))
+        if (!float.TryParse(inputYField.text, out result2))
             result2 = 0;
 
         // Intentamos parsear el segundo input field. Si falla, el valor resultará en 0.
-        if (!float.TryParse(inputField2.text, out result3))
+        if (!float.TryParse(inputZField.text, out result3))
             result3 = 0;
+        // Intentamos parsear el tercer input field. Si falla, el valor resultará en 0.
+        if (!float.TryParse(inputXField2.text, out result4))
+            result4 = 0;
 
-        // Creamos un vector con los valores procesados de los campos de entrada.
-        Vector3 v = new Vector3(result1, result2, result3);
+        // Intentamos parsear el primer input field. Si falla, el valor resultará en 0.
+        if (!float.TryParse(inputYField2.text, out result5))
+            result5 = 0;
 
-        // Recuperamos la entrada del usuario directamente del tercer input field (puedes adaptarlo según el campo relevante).
-        string userInput = inputField.text;
+        // Intentamos parsear el segundo input field. Si falla, el valor resultará en 0.
+        if (!float.TryParse(inputZField2.text, out result6))
+            result6 = 0;
 
-        // Actualizamos el texto en pantalla para informar al usuario de la operación seleccionada.
-        texto.text = "Operacion: " + userInput;
 
-        // Aquí podrías realizar acciones específicas según el tipo de operación seleccionada:
-        // Ejemplo: Si userInput es "suma", llamas al panel de suma.
-        if (userInput.Equals("SumaVectores", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelSumaVectores); // Llamamos al panel específico 
-        } else if (userInput.Equals("RestarVectores", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelRestarVectores); 
-        } else if (userInput.Equals("ProductoPunto", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelProductoPunto);
-        } else if (userInput.Equals("ProductoCruz", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelProductoCruz); 
-        } else if (userInput.Equals("Magnitud", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelMagnitud); 
-        } else if (userInput.Equals("Normalizar", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelNormalizar);
-        } else if (userInput.Equals("Transponer", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelTransponer); 
-        } else if (userInput.Equals("Determinante3x3", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelDeterminante3x3); 
-        } else if (userInput.Equals("Descomposicion", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelDescomposicion);
-        } else if (userInput.Equals("Ortogonalizacion", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelOrtogonalizacion);
-        } else if (userInput.Equals("SumarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelSumarMatrices); 
-        } else if (userInput.Equals("AnguloEntreVectores", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelAnguloEntreVectores); 
-        } else if (userInput.Equals("MultiplicarEscalar", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelMultiplicarEscalar); 
-        } else if (userInput.Equals("Reflejar", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelReflejar); 
-        } else if (userInput.Equals("InterseccionLineaPlano", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelInterseccionLineaPlano); 
-        } else if (userInput.Equals("DistanciaPuntoPlano", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelDistanciaPuntoPlano);
-        } else if (userInput.Equals("Rotacion2D", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelRotacion2D); 
-        } else if (userInput.Equals("Rotacion3D", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelRotacion3D); 
-        } else if (userInput.Equals("ConvertirAHomogeneas", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelConvertirAHomogeneas); 
-        } else if (userInput.Equals("ReflejoEscalar", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelReflejoEscalar); 
-        } else if (userInput.Equals("TransformacionRotacion", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelTransformacionRotacion); 
-        } else if (userInput.Equals("MultiplicarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelMultiplicarMatrices);
-        } else if (userInput.Equals("RestarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelRestarMatrices); 
-        } else if (userInput.Equals("InterseccionTresPlanos", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelInterseccionTresPlanos);
-        } else if (userInput.Equals("InversaMatriz3x3", System.StringComparison.OrdinalIgnoreCase)) {
-            MostrarPanel(panelInversaMatriz3x3); 
-        } else {
-            // Si el input no coincide con ninguna operación, mostramos un mensaje.
-            texto.text = "Operación no reconocida.";
+        string userInput = resultado.text;
+        resultado.text = "" + userInput;// o solo le quito SumarVectores y ya?
+
+        Vector3 v1 = new Vector3(result1, result2, result3);
+        Vector3 v2 = new Vector3(result4, result5, result6);
+
+        // Buscamos el script en la escena
+        OperacionesMatematicas operaciones = FindObjectOfType<OperacionesMatematicas>();
+
+        if (operaciones != null) {
+            // Llamamos a la función SumarVectores del script OperacionesMatematicas
+            Vector3 resultadoSuma = operaciones.SumarVectores(v1, v2);
+
+            // Mostramos el resultado en el TextMeshPro
+            resultado.text = $"Suma: ({resultadoSuma.x}, {resultadoSuma.y}, {resultadoSuma.z})";
+
+            //agregar a las demas, solo hay que lograr que funcione este primero 
         }
+
+        ////llamo a las acciones especificas segun el tipo de operacion y si inputfield es normalizar,llamo ese panel
+        //if (userInput.Equals("SumaVectores", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelSumaVectores);
+        //} else if (userInput.Equals("RestarVectores", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelRestarVectores);
+        //} else if (userInput.Equals("ProductoPunto", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelProductoPunto);
+        //} else if (userInput.Equals("ProductoCruz", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelProductoCruz);
+        //} else if (userInput.Equals("Magnitud", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelMagnitud);
+        //} else if (userInput.Equals("Normalizar", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelNormalizar);
+        //} else if (userInput.Equals("Transponer", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelTransponer);
+        //} else if (userInput.Equals("Determinante3x3", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelDeterminante3x3);
+        //} else if (userInput.Equals("Descomposicion", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelDescomposicion);
+        //} else if (userInput.Equals("Ortogonalizacion", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelOrtogonalizacion);
+        //} else if (userInput.Equals("SumarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelSumarMatrices);
+        //} else if (userInput.Equals("AnguloEntreVectores", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelAnguloEntreVectores);
+        //} else if (userInput.Equals("MultiplicarEscalar", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelMultiplicarEscalar);
+        //} else if (userInput.Equals("Reflejar", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelReflejar);
+        //} else if (userInput.Equals("InterseccionLineaPlano", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelInterseccionLineaPlano);
+        //} else if (userInput.Equals("DistanciaPuntoPlano", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelDistanciaPuntoPlano);
+        //} else if (userInput.Equals("Rotacion2D", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelRotacion2D);
+        //} else if (userInput.Equals("Rotacion3D", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelRotacion3D);
+        //} else if (userInput.Equals("ConvertirAHomogeneas", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelConvertirAHomogeneas);
+        //} else if (userInput.Equals("ReflejoEscalar", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelReflejoEscalar);
+        //} else if (userInput.Equals("TransformacionRotacion", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelTransformacionRotacion);
+        //} else if (userInput.Equals("MultiplicarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelMultiplicarMatrices);
+        //} else if (userInput.Equals("RestarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelRestarMatrices);
+        //} else if (userInput.Equals("InterseccionTresPlanos", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelInterseccionTresPlanos);
+        //} else if (userInput.Equals("InversaMatriz3x3", System.StringComparison.OrdinalIgnoreCase)) {
+        //    MostrarPanel(panelInversaMatriz3x3);
+        //} else {
+        //    // Si el input no coincide con ninguna operación, muestra un mensaje.
+        //    resultados.text = "Operación no reconocida.";
+        //}
     }
     #region Unity Methods
     private void Start() {
-        _historialTMP.text = "Historial: \n";
+        _historialTMP.text = "";//no se si mejor le pongo esto Historial: \n
         inputField.onEndEdit.AddListener(ProcesarInputUsuario);
         InitializeUI();
+        lineRender();
     }
 
     private void OnDrawGizmos() {
@@ -207,8 +230,8 @@ public class Calculadora : MonoBehaviour {
     }
 
     private void MostrarPanel(GameObject panel) {
-        OcultarTodosLosPaneles();
         panel.SetActive(true);
+        OcultarTodosLosPaneles();
     }
 
     private void OcultarTodosLosPaneles() {
