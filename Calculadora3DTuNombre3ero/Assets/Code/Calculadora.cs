@@ -224,22 +224,22 @@ public class Calculadora : MonoBehaviour
 
                 resultado.text = resultadoTexto;  // Mostramos el resultado final
             }
-        if (operaciones != null) {
-            float[,] v1 = new float[,] { { 1, 2 }, { 3, 4 } };  // Ejemplo de matriz 2x2
-            float[,] v2 = new float[,] { { 5, 6 }, { 7, 8 } };  // Ejemplo de matriz 2x2
-            float[,] resultadoSumarMatrices = operaciones.SumarMatrices(v1, v2);
+        //if (operaciones != null) {
+        //    float[,] v1 = new float[,] { { 1, 2 }, { 3, 4 } };  // Ejemplo de matriz 2x2
+        //    float[,] v2 = new float[,] { { 5, 6 }, { 7, 8 } };  // Ejemplo de matriz 2x2
+        //    float[,] resultadoSumarMatrices = operaciones.SumarMatrices(v1, v2);
 
-            // Mostrar el resultado en un TextMeshPro (esto depende de cómo quieras representar la matriz)
-            string resultadoTexto = "Resultado de la suma de matrices: \n";
-            for (int i = 0; i < resultadoSumarMatrices.GetLength(0); i++) {
-                for (int j = 0; j < resultadoSumarMatrices.GetLength(1); j++) {
-                    resultadoTexto += $"{resultadoSumarMatrices[i, j]} ";
-                }
-                resultadoTexto += "\n";
-            }
+        //    // Mostrar el resultado en un TextMeshPro (esto depende de cómo quieras representar la matriz)
+        //    string resultadoTexto = "Resultado de la suma de matrices: \n";
+        //    for (int i = 0; i < resultadoSumarMatrices.GetLength(0); i++) {
+        //        for (int j = 0; j < resultadoSumarMatrices.GetLength(1); j++) {
+        //            resultadoTexto += $"{resultadoSumarMatrices[i, j]} ";
+        //        }
+        //        resultadoTexto += "\n";
+        //    }
 
-            resultado.text = resultadoTexto;
-        }
+        //    resultado.text = resultadoTexto;
+        //}
         //llamo a las acciones especificas segun el tipo de operacion y si inputfield es normalizar,llamo ese panel
         if (userInput.Equals("SumaVectores", System.StringComparison.OrdinalIgnoreCase))
         {
