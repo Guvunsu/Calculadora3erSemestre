@@ -4,8 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class Calculadora : MonoBehaviour
-{
+public class Calculadora : MonoBehaviour {
     #region Variables
     public OperacionesMatematicas matematicas;
 
@@ -56,6 +55,8 @@ public class Calculadora : MonoBehaviour
     //public Material material;
     private Transform head;
     private Transform sphere;
+    public Dictionary<string, List<TMP_InputField>> operacionesInputs = new Dictionary<string, List<TMP_InputField>>();
+
     [SerializeField] TMP_InputField inputField;
     [SerializeField] TMP_InputField inputXField;
     [SerializeField] TMP_InputField inputYField;
@@ -64,18 +65,17 @@ public class Calculadora : MonoBehaviour
     [SerializeField] TMP_InputField inputYField2;
     [SerializeField] TMP_InputField inputZField2;
     [SerializeField] TextMeshProUGUI resultado;
-    [SerializeField] TextMeshProUGUI resultados;
-    [SerializeField] TMP_InputField inputFieldRestaVectores;
-    [SerializeField] TMP_InputField inputXFieldRestaVectores;
-    [SerializeField] TMP_InputField inputYFieldRestaVectores;
-    [SerializeField] TMP_InputField inputZFieldRestaVectores;
-    [SerializeField] TMP_InputField inputXField2RestaVectores;
-    [SerializeField] TMP_InputField inputYField2RestaVectores;
-    [SerializeField] TMP_InputField inputZField2RestaVectores;
+    //[SerializeField] TextMeshProUGUI resultados;
+    //[SerializeField] TMP_InputField inputFieldRestaVectores;
+    //[SerializeField] TMP_InputField inputXFieldRestaVectores;
+    //[SerializeField] TMP_InputField inputYFieldRestaVectores;
+    //[SerializeField] TMP_InputField inputZFieldRestaVectores;
+    //[SerializeField] TMP_InputField inputXField2RestaVectores;
+    //[SerializeField] TMP_InputField inputYField2RestaVectores;
+    //[SerializeField] TMP_InputField inputZField2RestaVectores;
 
     #endregion
-    public void lineRender()
-    {
+    public void lineRender() {
         sphere = transform.Find("Sphere");
         sphere.localScale = 0.3f * Vector3.one;
         head = transform.Find("Head");
@@ -83,8 +83,7 @@ public class Calculadora : MonoBehaviour
         GetComponent<LineRenderer>().widthMultiplier = 0.1f;
         GetComponent<LineRenderer>().positionCount = 2;
     }
-    public void inputUser()
-    {
+    public void inputUser() {
         // son los datos ingresados por el usuario desde cero.
         float result1 = 0, result2 = 0, result3 = 0, result4 = 0, result5 = 0, result6 = 0, result7 = 0, result8 = 0, result9 = 0;
 
@@ -114,31 +113,26 @@ public class Calculadora : MonoBehaviour
         Vector3 v1 = new Vector3(result1, result2, result3);
         Vector3 v2 = new Vector3(result4, result5, result6);
         Vector3 v3 = new Vector3(result7, result8, result9);
-        // Buscamos el script en la escena
+        //SCRIPT IMPORTANTE QUE HEREDA DE CALCULADORA LAS HABILIDADES DE MI CARTA DE INSTANT....
         OperacionesMatematicas operaciones = FindObjectOfType<OperacionesMatematicas>();
 
-        if (operaciones != null)
-        {
-            // Llamamos a la función SumarVectores del script OperacionesMatematicas
+        if (operaciones != null) {
+            // Llama la función SumarVectores de OperacionesMatematicas
             Vector3 resultadoSuma = operaciones.SumarVectores(v1, v2);
-
-            // Mostramos el resultado en el TextMeshPro
+            // Mostramos el resultado en un TextMeshPro
             resultado.text = $"Suma: ({resultadoSuma.x}, {resultadoSuma.y}, {resultadoSuma.z})";
 
             //agregar a las demas, solo hay que lograr que funcione este primero 
         }
-        if (operaciones != null)
-        {
+        if (operaciones != null) {
             Vector3 resultadoResta = operaciones.RestarVectores(v1, v2);
             resultado.text = $"Resta: ({resultadoResta.x}, {resultadoResta.y}, {resultadoResta.z})";
         }
-        if (operaciones != null)
-        {
+        if (operaciones != null) {
             float resultadoProductoPunto = operaciones.ProductoPunto(v1, v2);
             resultado.text = $"ProductoPunto: ({resultadoProductoPunto})";
         }
-        if (operaciones != null)
-        {
+        if (operaciones != null) {
             Vector3 resultadoProductoCruz = operaciones.ProductoCruz(v1, v2);
             resultado.text = $"ProductoCruz: ({resultadoProductoCruz.x}, {resultadoProductoCruz.y}, {resultadoProductoCruz.z})";
         }
@@ -224,148 +218,295 @@ public class Calculadora : MonoBehaviour
 
                 resultado.text = resultadoTexto;  // Mostramos el resultado final
             }
-        //if (operaciones != null) {
-        //    float[,] v1 = new float[,] { { 1, 2 }, { 3, 4 } };  // Ejemplo de matriz 2x2
-        //    float[,] v2 = new float[,] { { 5, 6 }, { 7, 8 } };  // Ejemplo de matriz 2x2
-        //    float[,] resultadoSumarMatrices = operaciones.SumarMatrices(v1, v2);
+        if (operaciones != null) {
+            // Crear dos matrices manualmente
+            Matrix4x4 m1 = new Matrix4x4();
+            Matrix4x4 m2 = new Matrix4x4();
 
-        //    // Mostrar el resultado en un TextMeshPro (esto depende de cómo quieras representar la matriz)
-        //    string resultadoTexto = "Resultado de la suma de matrices: \n";
-        //    for (int i = 0; i < resultadoSumarMatrices.GetLength(0); i++) {
-        //        for (int j = 0; j < resultadoSumarMatrices.GetLength(1); j++) {
-        //            resultadoTexto += $"{resultadoSumarMatrices[i, j]} ";
+            // Asignar valores a las matrices (puedes hacerlo dinámico con inputs)
+            m1.SetRow(0, new Vector4(result1, result2, result3, 0));
+            m1.SetRow(1, new Vector4(result4, result5, result6, 0));
+            m1.SetRow(2, new Vector4(result7, result8, result9, 0));
+            m1.SetRow(3, new Vector4(0, 0, 0, 1)); // Matriz homogénea
+
+            m2.SetRow(0, new Vector4(1, 2, 3, 0));
+            m2.SetRow(1, new Vector4(4, 5, 6, 0));
+            m2.SetRow(2, new Vector4(7, 8, 9, 0));
+            m2.SetRow(3, new Vector4(0, 0, 0, 1));
+
+            // Sumar matrices
+            Matrix4x4 resultadoSumarMatrices = operaciones.SumarMatrices(m1, m2);
+
+            // Mostrar el resultado
+            resultado.text = "Resultado de la suma de matrices:\n";
+            for (int i = 0; i < 4; i++) {
+                Vector4 fila = resultadoSumarMatrices.GetRow(i);
+                resultado.text += $"{fila.x}, {fila.y}, {fila.z}, {fila.w}\n";
+            }
+        }
+        if (operaciones != null) {
+            //Vector3? v11 = new Vector3(1, 0, 0);
+            //Vector3? v22 = new Vector3(0, 1, 0);
+
+            float resultadoAngulo = operaciones.AnguloEntreVectores(v1, v2);
+
+            if (float.IsNaN(resultadoAngulo)) {
+                //resultado.text = $"ProductoAngulo: ({resultadoAngulo})";
+                resultado.text = "Error: No se puede calcular el ángulo entre los vectores.";
+            } else {
+                resultado.text = $"Ángulo entre vectores: {resultadoAngulo}°";
+            }
+        }
+        // hasta aqui de chat gpt
+        if (operaciones != null) {
+            Vector3 v = new Vector3(2, 3, 4); // PUEDO CAMBIAR AMBOS DATOS
+            float escalar = 5;
+
+            Vector3 resultadoMultiplicacionEscalar = operaciones.MultiplicarEscalar(v, escalar);
+            resultado.text = $"Multiplicación por Escalar: ({resultadoMultiplicacionEscalar.x}, {resultadoMultiplicacionEscalar.y}, {resultadoMultiplicacionEscalar.z})";
+        }
+        if (operaciones != null) {
+            // Definimos un vector y una normal
+            Vector3 v = new Vector3(2, 3, 4);
+            Vector3 n = new Vector3(0, 1, 0);
+
+            Vector3 resultadoReflejo = operaciones.Reflejar(v, n);
+            resultado.text = $"Reflejo: ({resultadoReflejo.x}, {resultadoReflejo.y}, {resultadoReflejo.z})";
+        }
+        if (operaciones != null) {
+            Vector3 puntoLinea = new Vector3(1, 2, 3);
+            Vector3 direccionLinea = new Vector3(4, 5, 6);
+            Vector3 puntoPlano = new Vector3(0, 0, 0);
+            Vector3 normalPlano = new Vector3(0, 1, 0);
+
+            Vector3 resultadoInterseccion = operaciones.InterseccionLineaPlano(puntoLinea, direccionLinea, puntoPlano, normalPlano);
+            resultado.text = $"IntersecciónLineaPlano: ({resultadoInterseccion.x}, {resultadoInterseccion.y}, {resultadoInterseccion.z})";
+        }
+
+        if (operaciones != null) {
+            Vector3 punto = new Vector3(1, 2, 3);
+            Vector3 puntoPlano = new Vector3(0, 0, 0);
+            Vector3 normalPlano = new Vector3(0, 1, 0);
+
+            float resultadoDistancia = operaciones.DistanciaPuntoPlano(punto, puntoPlano, normalPlano);
+            resultado.text = $"DistanciaPuntoPlano: {resultadoDistancia}";
+        }
+        if (operaciones != null) {
+
+            float anguloRotation = 45f; // Cambiar este valor por el angulo que necesito en la operacion :3
+
+            Matrix4x4 resultadoRotacion2D = operaciones.Rotacion2D(anguloRotation);
+            resultado.text = $"Matriz de Rotación 2D: {resultadoRotacion2D}";
+        }
+        if (operaciones != null) {
+
+            Vector3 eje = new Vector3(0, 1, 0);
+            float angulo = 45f;
+
+            Matrix4x4 resultadoRotacion3D = operaciones.Rotacion3D(eje, angulo);
+            resultado.text = $"Matriz de Rotación 3D:\n{resultadoRotacion3D}";
+        }
+        if (operaciones != null) {
+            Vector3 v = new Vector3(1, 2, 3);
+
+            Vector4 resultadoHomogeneo = operaciones.ConvertirAHomogeneas(v);
+            resultado.text = $"Vector de Convertir a Homogéneas Unga Unga: ({resultadoHomogeneo.x}, {resultadoHomogeneo.y}, {resultadoHomogeneo.z}, {resultadoHomogeneo.w})";
+        }
+        if (operaciones != null) {
+            //el valor sera para al que deseo reflejar y referencia con la que se reflejara
+            float valor = 3.5f;
+            float referencia = 5.0f;
+
+            float resultadoReflejo = operaciones.ReflejoEscalar(valor, referencia);
+            resultado.text = $"Reflejo Escalar: ({resultadoReflejo})";
+        }
+        if (operaciones != null) {
+            Vector4 vector = new Vector4(1, 0, 0, 1);
+            Matrix4x4 matrizRotacion = operaciones.Rotacion3D(new Vector3(0, 0, 0), 90);
+
+            Vector4 resultadoRotacion = operaciones.TransformacionRotacion(vector, matrizRotacion);
+            resultado.text = $"Resultado de la TransformacionRotaciónUngaUnga: ({resultadoRotacion.x}, {resultadoRotacion.y}, {resultadoRotacion.z}, {resultadoRotacion.w})";
+        }//chatgpt la siguiente x_x
+         //    if (operaciones != null) {
+         //        Definimos las dos matrices de ejemplo
+         //        float[,] matrizA = new float[,] {
+         //    { 1, 2 },
+         //    { 3, 4 }
+         //};
+
+        //        float[,] matrizB = new float[,] {
+        //    { 5, 6 },
+        //    { 7, 8 }
+        //};
+
+        //        try {
+        //            Llamamos al método MultiplicarMatrices
+        //            float[,] resultadoMultiplicacion = operaciones.MultiplicarMatrices(matrizA, matrizB);
+
+        //            Mostramos el resultado en el TextMeshPro
+        //            string resultadoTexto = "Resultado de la multiplicación:\n";
+        //            for (int i = 0; i < resultadoMultiplicacion.GetLength(0); i++) {
+        //                for (int j = 0; j < resultadoMultiplicacion.GetLength(1); j++) {
+        //                    resultadoTexto += $"{resultadoMultiplicacion[i, j]} ";
+        //                }
+        //                resultadoTexto += "\n";
+        //            }
+        //            resultado.text = resultadoTexto;
+        //        } catch (InvalidOperationException ex) {
+        //            En caso de que las matrices no sean multiplicables
+        //            resultado.text = ex.Message;
         //        }
-        //        resultadoTexto += "\n";
         //    }
+        //    if (operaciones != null) {
+        //        Definimos las dos matrices de ejemplo
+        //        float[,] matrizA = new float[,] {
+        //    { 5, 7 },
+        //    { 9, 3 }
+        //};
 
-        //    resultado.text = resultadoTexto;
-        //}
-        //llamo a las acciones especificas segun el tipo de operacion y si inputfield es normalizar,llamo ese panel
-        if (userInput.Equals("SumaVectores", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelSumaVectores);
-        }
-        else if (userInput.Equals("RestarVectores", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelRestarVectores);
-        }
-        else if (userInput.Equals("ProductoPunto", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelProductoPunto);
-        }
-        else if (userInput.Equals("ProductoCruz", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelProductoCruz);
-        }
-        else if (userInput.Equals("Magnitud", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelMagnitud);
-        }
-        else if (userInput.Equals("Normalizar", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelNormalizar);
-        }
-        else if (userInput.Equals("Transponer", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelTransponer);
-        }
-        else if (userInput.Equals("Determinante3x3", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelDeterminante3x3);
-        }
-        else if (userInput.Equals("Descomposicion", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelDescomposicion);
-        }
-        else if (userInput.Equals("Ortogonalizacion", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelOrtogonalizacion);
-        }
-        else if (userInput.Equals("SumarMatrices", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelSumarMatrices);
-        }
-        else if (userInput.Equals("AnguloEntreVectores", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelAnguloEntreVectores);
-        }
-        else if (userInput.Equals("MultiplicarEscalar", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelMultiplicarEscalar);
-        }
-        else if (userInput.Equals("Reflejar", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelReflejar);
-        }
-        else if (userInput.Equals("InterseccionLineaPlano", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelInterseccionLineaPlano);
-        }
-        else if (userInput.Equals("DistanciaPuntoPlano", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelDistanciaPuntoPlano);
-        }
-        else if (userInput.Equals("Rotacion2D", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelRotacion2D);
-        }
-        else if (userInput.Equals("Rotacion3D", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelRotacion3D);
-        }
-        else if (userInput.Equals("ConvertirAHomogeneas", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelConvertirAHomogeneas);
-        }
-        else if (userInput.Equals("ReflejoEscalar", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelReflejoEscalar);
-        }
-        else if (userInput.Equals("TransformacionRotacion", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelTransformacionRotacion);
-        }
-        else if (userInput.Equals("MultiplicarMatrices", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelMultiplicarMatrices);
-        }
-        else if (userInput.Equals("RestarMatrices", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelRestarMatrices);
-        }
-        else if (userInput.Equals("InterseccionTresPlanos", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelInterseccionTresPlanos);
-        }
-        else if (userInput.Equals("InversaMatriz3x3", System.StringComparison.OrdinalIgnoreCase))
-        {
-            MostrarPanel(panelInversaMatriz3x3);
-        }
-        else
-        {
-            // Si el input no coincide con ninguna operación, muestra un mensaje.
-            resultados.text = "Operación no reconocida.";
-        }
+        //        float[,] matrizB = new float[,] {
+        //    { 2, 4 },
+        //    { 6, 8 }
+        //};
+
+        //        try {
+        //            Llamamos al método RestarMatrices
+        //            float[,] resultadoResta = operaciones.RestarMatrices(matrizA, matrizB);
+
+        //            Mostramos el resultado en el TextMeshPro
+        //            string resultadoTexto = "Resultado de la resta:\n";
+        //            for (int i = 0; i < resultadoResta.GetLength(0); i++) {
+        //                for (int j = 0; j < resultadoResta.GetLength(1); j++) {
+        //                    resultadoTexto += $"{resultadoResta[i, j]} ";
+        //                }
+        //                resultadoTexto += "\n";
+        //            }
+        //            resultado.text = resultadoTexto;
+        //        } catch (InvalidOperationException ex) {
+        //            En caso de que las matrices no tengan las mismas dimensiones
+        //            resultado.text = ex.Message;
+        //        }
+        //    }
+        //    if (operaciones != null) {
+        //        // Definimos tres planos como Vectores 4D (Ax + By + Cz + D = 0)
+        //        Vector4 plano1 = new Vector4(1, 0, 0, -5); // Ejemplo de plano 1: x = 5
+        //        Vector4 plano2 = new Vector4(0, 1, 0, -3); // Ejemplo de plano 2: y = 3
+        //        Vector4 plano3 = new Vector4(0, 0, 1, -4); // Ejemplo de plano 3: z = 4
+
+        //        try {
+        //            // Llamamos al método InterseccionTresPlanos
+        //            Vector3 puntoInterseccion = operaciones.InterseccionTresPlanos(plano1, plano2, plano3);
+
+        //            // Mostramos el resultado en el TextMeshPro
+        //            resultado.text = $"Punto de intersección 3 Planos: ({puntoInterseccion.x}, {puntoInterseccion.y}, {puntoInterseccion.z})";
+        //        } catch (InvalidOperationException ex) {
+        //            // En caso de que los planos no se crucen en un punto único
+        //            resultado.text = ex.Message;
+        //        }
+        //    }
+        //    if (operaciones != null) {
+        //        Definimos una matriz 3x3 para ejemplo
+        //        float[,] matriz = {
+        //    { 3, -2,  5 },
+        //    { 1,  0,  4 },
+        //    { 2,  3, -1 }
+        //};
+
+        //        try {
+        //            // Llamamos al método InversaMatriz3x3
+        //            float[,] inversa = operaciones.InversaMatriz3x3(matriz);
+
+        //            // Mostramos el resultado en el TextMeshPro
+        //            string resultadoInversa = "InversaMatriz3x3:\n";
+        //            for (int i = 0; i < 3; i++) {
+        //                for (int j = 0; j < 3; j++) {
+        //                    resultadoInversa += inversa[i, j] + " ";
+        //                }
+        //                resultadoInversa += "\n";
+        //            }
+        //            resultado.text = resultadoInversa;
+        //        } catch (InvalidOperationException ex) {
+        //            // En caso de que la matriz no tenga inversa
+        //            resultado.text = ex.Message;
+        //        }
+        //    }
+        //    hasta aquix2
+
+
+        ////     lo otro no funciona pero no afecat si esta o no esta comentado , despues de esto hay mas codigo funcional, mas o menos
+
+
+        //    //llamo a las acciones especificas segun el tipo de operacion y si inputfield es normalizar,llamo ese panel
+        //    if (userInput.Equals("SumaVectores", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelSumaVectores);
+        //    } else if (userInput.Equals("RestarVectores", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelRestarVectores);
+        //    } else if (userInput.Equals("ProductoPunto", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelProductoPunto);
+        //    } else if (userInput.Equals("ProductoCruz", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelProductoCruz);
+        //    } else if (userInput.Equals("Magnitud", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelMagnitud);
+        //    } else if (userInput.Equals("Normalizar", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelNormalizar);
+        //    } else if (userInput.Equals("Transponer", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelTransponer);
+        //    } else if (userInput.Equals("Determinante3x3", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelDeterminante3x3);
+        //    } else if (userInput.Equals("Descomposicion", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelDescomposicion);
+        //    } else if (userInput.Equals("Ortogonalizacion", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelOrtogonalizacion);
+        //    } else if (userInput.Equals("SumarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelSumarMatrices);
+        //    } else if (userInput.Equals("AnguloEntreVectores", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelAnguloEntreVectores);
+        //    } else if (userInput.Equals("MultiplicarEscalar", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelMultiplicarEscalar);
+        //    } else if (userInput.Equals("Reflejar", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelReflejar);
+        //    } else if (userInput.Equals("InterseccionLineaPlano", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelInterseccionLineaPlano);
+        //    } else if (userInput.Equals("DistanciaPuntoPlano", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelDistanciaPuntoPlano);
+        //    } else if (userInput.Equals("Rotacion2D", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelRotacion2D);
+        //    } else if (userInput.Equals("Rotacion3D", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelRotacion3D);
+        //    } else if (userInput.Equals("ConvertirAHomogeneas", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelConvertirAHomogeneas);
+        //    } else if (userInput.Equals("ReflejoEscalar", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelReflejoEscalar);
+        //    } else if (userInput.Equals("TransformacionRotacion", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelTransformacionRotacion);
+        //    } else if (userInput.Equals("MultiplicarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelMultiplicarMatrices);
+        //    } else if (userInput.Equals("RestarMatrices", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelRestarMatrices);
+        //    } else if (userInput.Equals("InterseccionTresPlanos", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelInterseccionTresPlanos);
+        //    } else if (userInput.Equals("InversaMatriz3x3", System.StringComparison.OrdinalIgnoreCase)) {
+        //        MostrarPanel(panelInversaMatriz3x3);
+        //    } else {
+        //        // Si el input no coincide con ninguna operación, muestra un mensaje.
+        //        resultados.text = "Operación no reconocida.";
+        //    }
     }
     #region Unity Methods
-    private void Start()
-    {
+    private void Start() {
         _historialTMP.text = "";//no se si mejor le pongo esto Historial: \n
         inputField.onEndEdit.AddListener(ProcesarInputUsuario);
         InitializeUI();
         lineRender();
     }
 
-    private void OnDrawGizmos()
-    {
-        if (vectorA.HasValue)
-        {
+    private void OnDrawGizmos() {
+        if (vectorA.HasValue) {
             Gizmos.color = Color.red;
             Gizmos.DrawLine(Vector3.zero, vectorA.Value);
         }
 
-        if (vectorB.HasValue)
-        {
+        if (vectorB.HasValue) {
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(Vector3.zero, vectorB.Value);
         }
@@ -373,8 +514,7 @@ public class Calculadora : MonoBehaviour
     #endregion
 
     #region UI Management
-    public void InitializeUI()
-    {
+    public void InitializeUI() {
         operationButtons[0].onClick.AddListener(() => MostrarPanel(panelSumaVectores));
         operationButtons[1].onClick.AddListener(() => MostrarPanel(panelRestarVectores));
         operationButtons[2].onClick.AddListener(() => MostrarPanel(panelProductoPunto));
@@ -405,14 +545,12 @@ public class Calculadora : MonoBehaviour
 
     }
 
-    public void MostrarPanel(GameObject panel)
-    {
-        panel.SetActive(true);
+    public void MostrarPanel(GameObject panel) {
         OcultarTodosLosPaneles();
+        panel.SetActive(true);
     }
 
-    public void OcultarTodosLosPaneles()
-    {
+    public void OcultarTodosLosPaneles() {
         panelSumaVectores.SetActive(false);
         panelRestarVectores.SetActive(false);
         panelProductoPunto.SetActive(false);
@@ -442,30 +580,30 @@ public class Calculadora : MonoBehaviour
     #endregion
 
     #region Input Processing
-    public void ProcesarInputUsuario(string usuarioInput)
-    {
-        if (!string.IsNullOrWhiteSpace(usuarioInput))
-        {
+    public void ProcesarInputUsuario(string usuarioInput) {
+        if (!string.IsNullOrWhiteSpace(usuarioInput)) {
             historialCalculo.Add(usuarioInput);
             ActualizarHistorial();
         }
         inputField.text = "";
+        //chat gpt me lo recomienda , es tentativo quedarmelo o no 
+        // Opcionalmente, puedes poner el foco de nuevo en el InputField para continuar escribiendo
+        inputField.ActivateInputField();
     }
 
-    public void ActualizarHistorial()
-    {
-        _historialTMP.text = "Historial: \n";
-        foreach (var entrada in historialCalculo)
-        {
+    public void ActualizarHistorial() {
+        _historialTMP.text = "\n";
+        foreach (var entrada in historialCalculo) {
             _historialTMP.text += entrada + "\n";
         }
     }
+
+
     #endregion
 
     #region Result Display
-    public void MostrarResultado(string resultado)
-    {
-        historialCalculo.Add("Resultado: " + resultado);
+    public void MostrarResultado(string resultado) {
+        historialCalculo.Add("R=" + resultado);
         ActualizarHistorial();
     }
     #endregion

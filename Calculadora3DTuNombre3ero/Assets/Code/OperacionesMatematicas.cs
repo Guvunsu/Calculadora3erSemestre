@@ -161,16 +161,29 @@ public class OperacionesMatematicas : MonoBehaviour {
 
     // Suma de matrices (Ejemplo con matrices 2x2)
     public Matrix4x4 SumarMatrices(Matrix4x4 m1, Matrix4x4 m2) {
-
         Matrix4x4 resultado = new Matrix4x4();
 
-        // Sumar elemento por elemento
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                resultado[i, j] = m1[i, j] + m2[i, j];
-            }
-        }
-        //MostrarResultado(resultado.ToString());
+        // Sumar elemento por elemento usando las propiedades de Matrix4x4
+        resultado.m00 = m1.m00 + m2.m00;
+        resultado.m01 = m1.m01 + m2.m01;
+        resultado.m02 = m1.m02 + m2.m02;
+        resultado.m03 = m1.m03 + m2.m03;
+
+        resultado.m10 = m1.m10 + m2.m10;
+        resultado.m11 = m1.m11 + m2.m11;
+        resultado.m12 = m1.m12 + m2.m12;
+        resultado.m13 = m1.m13 + m2.m13;
+
+        resultado.m20 = m1.m20 + m2.m20;
+        resultado.m21 = m1.m21 + m2.m21;
+        resultado.m22 = m1.m22 + m2.m22;
+        resultado.m23 = m1.m23 + m2.m23;
+
+        resultado.m30 = m1.m30 + m2.m30;
+        resultado.m31 = m1.m31 + m2.m31;
+        resultado.m32 = m1.m32 + m2.m32;
+        resultado.m33 = m1.m33 + m2.m33;
+
         return resultado;
     }
     //Angulo Entre Vectores :3
