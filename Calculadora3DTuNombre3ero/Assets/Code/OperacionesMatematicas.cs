@@ -211,9 +211,9 @@ public class OperacionesMatematicas : MonoBehaviour {
 
         // Reflejo del vector
         return new Vector3(
-            v.x - 2 * productoPunto * n.x,
-            v.y - 2 * productoPunto * n.y,
-            v.z - 2 * productoPunto * n.z
+            v.x - 1 * productoPunto * n.x,
+            v.y - 1 * productoPunto * n.y,
+            v.z - 1 * productoPunto * n.z
         );
     }
     public Vector3 InterseccionLineaPlano(Vector3 puntoLinea, Vector3 direccionLinea, Vector3 puntoPlano, Vector3 normalPlano) {
