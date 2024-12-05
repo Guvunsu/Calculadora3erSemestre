@@ -67,10 +67,8 @@ public class OperacionesMatematicas : MonoBehaviour {
         float magnitud = Mathf.Sqrt((v.x * v.x) + (v.y * v.y) + (v.z * v.z));
         if (magnitud > 0) {
             Vector3 normalizado = new Vector3(v.x / magnitud, v.y / magnitud, v.z / magnitud);
-            // MostrarResultado($"Vector normalizado: {normalizado}");
             return normalizado; // Retorna el vector normalizado
         } else {
-            //MostrarResultado("No se puede normalizar un vector de magnitud 0");
             return Vector3.zero; // Devuelve un vector nulo
         }
     }
