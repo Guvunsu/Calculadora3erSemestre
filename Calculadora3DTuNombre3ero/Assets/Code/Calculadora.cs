@@ -10,9 +10,6 @@ public class Calculadora : MonoBehaviour {
     #region Variables
     public OperacionesMatematicas matematicas;
 
-    //[SerializeField] private TMP_InputField m_inputField;
-
-
     // Paneles de operaciones
     [SerializeField] private GameObject panelSumaVectores;
     [SerializeField] private GameObject panelRestarVectores;
@@ -41,22 +38,9 @@ public class Calculadora : MonoBehaviour {
     [SerializeField] private GameObject panelInterseccionTresPlanos;
     [SerializeField] private GameObject panelInversaMatriz3x3;
 
-
-
     [SerializeField] private TextMeshProUGUI _historialTMP;
     [SerializeField] private Button[] operationButtons;
     private List<string> historialCalculo = new List<string>();
-
-    //// Para dibujar en Gizmos
-    //private Vector3? vectorA = null;
-    //private Vector3? vectorB = null;
-
-    //LineRnederer
-    public Color color;
-    //public Material material;
-    private Transform head;
-    private Transform sphere;
-
 
     public Dictionary<string, List<TMP_InputField>> operacionesInputs = new Dictionary<string, List<TMP_InputField>>();
 
@@ -76,21 +60,10 @@ public class Calculadora : MonoBehaviour {
     [SerializeField] TMP_InputField inputWField3;
     [SerializeField] TextMeshProUGUI resultado;
 
-
     #endregion
 
-    #region linerenderer
-    //public void lineRender() {
-    //    sphere = transform.Find("Sphere");
-    //    sphere.localScale = 0.3f * Vector3.one;
-    //    head = transform.Find("Head");
-    //    head.localScale = 0.25f * Vector3.one;
-    //    GetComponent<LineRenderer>().widthMultiplier = 0.1f;
-    //    GetComponent<LineRenderer>().positionCount = 2;
-    //}
-    #endregion linerenderer
-
     #region Llamado a las operaciones
+
     // funciona en ui , ocupas 2 paneles xyz
     /* public void SumarVectores(OperacionesMatematicas operaciones, Vector3 v1, Vector3 v2) {
          // Llama la función SumarVectores de OperacionesMatematicas
@@ -129,7 +102,7 @@ public class Calculadora : MonoBehaviour {
         resultado.text = $"ProductoNormalizar: ({resultadoNormalizar})";
     }*/
 
-    //si funciona 
+    //funciona, hay que modificarla aqui en el metodo la matriz 
     /* public void Transponer(OperacionesMatematicas operaciones) {
          {
              // modificar la matriz para que de :D
@@ -195,11 +168,11 @@ public class Calculadora : MonoBehaviour {
       }*/
 
     //funciona parece ser , en ui solo 1 panel xyz
-   /*  public void ConvertirAHomogeneas(OperacionesMatematicas operaciones, Vector3 v1) {
+    /*  public void ConvertirAHomogeneas(OperacionesMatematicas operaciones, Vector3 v1) {
 
-         Vector4 vectorHomogeneo = operaciones.ConvertirAHomogeneas(v1);
-         resultado.text = $"Vector Homogéneo: ({vectorHomogeneo.x}, {vectorHomogeneo.y}, {vectorHomogeneo.z}, {vectorHomogeneo.w})";
-     }*/
+          Vector4 vectorHomogeneo = operaciones.ConvertirAHomogeneas(v1);
+          resultado.text = $"Vector Homogéneo: ({vectorHomogeneo.x}, {vectorHomogeneo.y}, {vectorHomogeneo.z}, {vectorHomogeneo.w})";
+      }*/
 
     //probarla de nuevo 
     /*  public void SumaMatrices(OperacionesMatematicas operaciones, float result1, float result2, float result3, float result4, float result5, float result6, float result7, float result8, float result9) {
@@ -229,7 +202,17 @@ public class Calculadora : MonoBehaviour {
           }
       }*/
 
-    //funciona ,modificar las matrices con los datos , solo funciona 2x2
+    //funciona, solo hya una ligera muy ligera variacion en decimales 
+    /* public void AnguloEntreVectores(OperacionesMatematicas operaciones, Vector3 v1, Vector3 v2) {
+        // hacer el producto punto de v1 y v2
+         v1 = new Vector3(90, 787, 10);
+         v2 = new Vector3(49, 242, 222);
+
+         float angulo = operaciones.AnguloEntreVectores(v1, v2);
+         resultado.text = $"Ángulo entre los vectores: ({angulo}, {angulo}, {angulo})";
+     }*/
+
+    //funciona ,modificar las matrices con los datos , solo funciona 2x2,querres el 3x3 , agrega una matrizC (queda pendiendte el for)
     /* public void RestaMatrices(OperacionesMatematicas operaciones) {
          //Definimos las dos matrices de ejemplo
          float[,] matrizA = new float[,] {
@@ -260,6 +243,10 @@ public class Calculadora : MonoBehaviour {
              resultado.text = ex.Message;
          }
      }*/
+
+    public void RestaMatrices3x3() {
+        
+    }
 
     //funciona pero uno le debe de modificar manualmente desde aqui 
     /* public void MultiplicacionMatrices(OperacionesMatematicas operaciones) {
@@ -293,125 +280,152 @@ public class Calculadora : MonoBehaviour {
          }
      }*/
 
-
-    public void AnguloEntreVectores() {
-
-    }
-
-    //me da cero rodo aun modificado el v1  ,,,,probarla de nuevo
+    //Funciona, ligera incremento en la X pero los dema sis dan en el blanco, hay que modiciar desde aqui el vector y el escalar
     /* public void MultiplicarEscalar(OperacionesMatematicas operaciones, Vector3 v1, float escalar) {
-         v1 = new Vector3(210, 312, -4); // PUEDO CAMBIAR AMBOS DATOS
-    escalar=95 //probar si funciona , experimento despues de la multiPorMatriz2x2
-         Vector3 resultadoMultiplicacionEscalar = operaciones.MultiplicarEscalar(v1, escalar);
-         resultado.text = $"Multiplicación por Escalar: ({resultadoMultiplicacionEscalar.x}, {resultadoMultiplicacionEscalar.y}, {resultadoMultiplicacionEscalar.z})";
+          v1 = new Vector3(210, 312, -4); // PUEDO CAMBIAR AMBOS DATOS
+          escalar = 95;
+          Vector3 resultadoMultiplicacionEscalar = operaciones.MultiplicarEscalar(v1, escalar);
+          resultado.text = $"Multiplicación por Escalar: ({resultadoMultiplicacionEscalar.x}, {resultadoMultiplicacionEscalar.y}, {resultadoMultiplicacionEscalar.z})";
+      }*/
+
+    //funciona, modificar aqui
+    /* public void Reflejar(OperacionesMatematicas operaciones) {
+         //Definimos v= vector y n=normal
+         Vector3 v = new Vector3(151, 1545, 157);
+         Vector3 n = new Vector3(458, 103, 19);
+
+         Vector3 resultadoReflejo = operaciones.Reflejar(v, n);
+         resultado.text = $"Reflejo: ({resultadoReflejo.x}, {resultadoReflejo.y}, {resultadoReflejo.z})";
      }*/
 
-    //funciona de algun modo pero no se como 
-    /*public void Reflejar(OperacionesMatematicas operaciones, Vector3 v1, Vector3 v2) {
-        Definimos un vector y una normal,modificarlos cuando lo requiero
-        Vector3 v = new Vector3(15, 15, 15);
-        Vector3 n = new Vector3(45, 1, 10);
+    //Funciona, pero puede ser inesacta en numeros altos y si es en linea y punto , se dara a si misma
+    /*public void InterseccionLineaPlano(OperacionesMatematicas operaciones) {
+        Vector3 puntoLinea = new Vector3(1545, 15786, 15453);
+        Vector3 direccionLinea = new Vector3(454, 12, 103);
+        Vector3 puntoPlano = new Vector3(152, 155, 158);
+        Vector3 normalPlano = new Vector3(459, 178, 10);
 
-        Vector3 resultadoReflejo = operaciones.Reflejar(v1, v2);
-        resultado.text = $"Reflejo: ({resultadoReflejo.x}, {resultadoReflejo.y}, {resultadoReflejo.z})";
+        Vector3 resultadoInterseccion = operaciones.InterseccionLineaPlano(puntoLinea, direccionLinea, puntoPlano, normalPlano);
+        resultado.text = $"IntersecciónLineaPlano: ({resultadoInterseccion.x}, {resultadoInterseccion.y}, {resultadoInterseccion.z})";
     }*/
 
-    //me sale NaN 
-    /* public void InterseccionLineaPlano(OperacionesMatematicas operaciones, Vector3 puntoLinea, Vector3 direccionLinea, Vector3 puntoPlano, Vector3 normalPlano) {
+    //fuciona,modificar desde aqui los parametros
+    /* public void DistanciaPuntoPlano(OperacionesMatematicas operaciones) {
+         Vector3 punto = new Vector3(1, 2, 3);
+         Vector3 puntoPlano = new Vector3(0, 0, 0);
+         Vector3 normalPlano = new Vector3(0, 1, 0);
 
-         Vector3 resultadoInterseccion = operaciones.InterseccionLineaPlano(puntoLinea, direccionLinea, puntoPlano, normalPlano);
-         resultado.text = $"IntersecciónLineaPlano: ({resultadoInterseccion.x}, {resultadoInterseccion.y}, {resultadoInterseccion.z})";
+         float resultadoDistancia = operaciones.DistanciaPuntoPlano(punto, puntoPlano, normalPlano);
+         resultado.text = $"DistanciaPuntoPlano: {resultadoDistancia}";
      }*/
 
-    //me sale NaN 
-    /*public void DistanciaPuntoPlano(OperacionesMatematicas operaciones, Vector3 punto, Vector3 puntoPlano, Vector3 normalPlano) {
-        //Vector3 punto = new Vector3(1, 2, 3);
-        //Vector3 puntoPlano = new Vector3(0, 0, 0);
-        //Vector3 normalPlano = new Vector3(0, 1, 0);
+    //funciona, pero aqui deberas modificar ek angulo de rotacion y en el otro script los vectores para que de seno y coseno 
+    /*  public void Rotacion2D(OperacionesMatematicas operaciones) {
+           float anguloRotation = 105f; // Cambiar este valor por lo que necesito en la operacion :3
 
-        float resultadoDistancia = operaciones.DistanciaPuntoPlano(punto, puntoPlano, normalPlano);
-        resultado.text = $"DistanciaPuntoPlano: {resultadoDistancia}";
-    }*/
+           Matrix4x4 resultadoRotacion2D = operaciones.Rotacion2D(anguloRotation);
+           resultado.text = $"Matriz de Rotación 2D: {resultadoRotacion2D}";
+       }*/
 
-    // sale una especie de error 
-    /* public void Rotacion2D(OperacionesMatematicas operaciones) {
-         float anguloRotation = 0f; // Cambiar este valor por lo que necesito en la operacion :3
+    //funciona mas o menos, tiene un detalle que no lo hace perfecta
+    /*  public void Rotacion3D(OperacionesMatematicas operaciones) {
+          Vector3 eje = new Vector3(124, 10, 890);
+          float angulo = 45f;
 
-         Matrix4x4 resultadoRotacion2D = operaciones.Rotacion2D(anguloRotation);
-         resultado.text = $"Matriz de Rotación 2D: {resultadoRotacion2D}";
-     }*/
+          Matrix4x4 resultadoRotacion3D = operaciones.Rotacion3D(eje, angulo);
+          resultado.text = $"Matriz de Rotación 3D:\n{resultadoRotacion3D}";
+      }*/
 
-    /* public void Rotacion3D(OperacionesMatematicas operaciones) {
-         Vector3 eje = new Vector3(0, 1, 0);
-         float angulo = 45f;
+    //no entiendo como arreglarlo
+    /*  public void ReflejoEscalar(OperacionesMatematicas operaciones) {
+          Vector3 vector = new Vector3(1, 2, 3);  // Puedes cambiar este vector
+          float escalar = 2f;  // Puedes cambiar este valor también
 
-         Matrix4x4 resultadoRotacion3D = operaciones.Rotacion3D(eje, angulo);
-         resultado.text = $"Matriz de Rotación 3D:\n{resultadoRotacion3D}";
-     }*/
+          Vector3 resultadoReflejo = operaciones.ReflejoEscalar(vector, escalar);
+          string vectorOriginal = $"({vector.x}, {vector.y}, {vector.z})";
+          string resultado = $"({resultadoReflejo.x}, {resultadoReflejo.y}, {resultadoReflejo.z})";
+          string resultadoString = $"Reflejo escalar del vector {vectorOriginal} por el escalar {escalar} es: {resultado}";
+          resultado.text = resultadoString;
+      }*/
 
-    public void ReflejoEscalar(OperacionesMatematicas operaciones) {
-
-    }
-
-    //esta parece que me la da mal
+    //funciona pero cuando le preguntaba al ChatGpt en fase de pruebas de resultados, no podia , pero tengo fe que funciona
     /*public void TransformacionRotacion(OperacionesMatematicas operaciones) {
-        Vector4 vector = new Vector4(1, 0, 0, 1);
+        Vector4 vector = new Vector4(1, 10, 20, 1);
         Matrix4x4 matrizRotacion = operaciones.Rotacion3D(new Vector3(0, 0, 0), 90);
 
         Vector4 resultadoRotacion = operaciones.TransformacionRotacion(vector, matrizRotacion);
         resultado.text = $"Resultado de la TransformacionRotación: ({resultadoRotacion.x}, {resultadoRotacion.y}, {resultadoRotacion.z}, {resultadoRotacion.w})";
     }*/
+    //Funciona, hay que modifcar ambas matrices e ingresar o
+    /* public void MultiplicarMatrices(OperacionesMatematicas operaciones) {
 
-    public void MultiplicarMatrices(OperacionesMatematicas operaciones) {
-
-    }
-
-    //si lo tenog activa me aparece este primero en vez de la que solicito
-    /* public void InterseccionTresPlanos(OperacionesMatematicas operaciones) {
-         // Definimos tres planos como Vectores 4D (Ax + By + Cz + D = 0)
-         Vector4 plano1 = new Vector4(1, 0, 0, -5); // Ejemplo de plano 1: x = 5
-         Vector4 plano2 = new Vector4(0, 1, 0, -3); // Ejemplo de plano 2: y = 3
-         Vector4 plano3 = new Vector4(0, 0, 1, -4); // Ejemplo de plano 3: z = 4
-
-         try {
-             // Llamamos al método InterseccionTresPlanos
-             Vector3 puntoInterseccion = operaciones.InterseccionTresPlanos(plano1, plano2, plano3);
-
-             // Mostramos el resultado en el TextMeshPro
-             resultado.text = $"Punto de intersección 3 Planos: ({puntoInterseccion.x}, {puntoInterseccion.y}, {puntoInterseccion.z})";
-         } catch (InvalidOperationException ex) {
-             // En caso de que los planos no se crucen en un punto único
-             resultado.text = ex.Message;
-         }
-     }*/
-
-    //parece que funciona pero cuando esta activo el programa se rompe y no sirve otra cosa a excepcion de este
-    /* public void InversaMatriz3x3(OperacionesMatematicas operaciones) {
-         //Definimos una matriz 3x3 para ejemplo
-         float[,] matriz = {
-             { 3, -2,  5 },
-             { 1,  0,  4 },
-             { 2,  3, -1 }
+         float[,] matrizA = new float[,] {
+             { 1, 2, 3 },
+             { 4, 5, 6 }
          };
 
-         try {
-             // Llamamos al método InversaMatriz3x3
-             float[,] inversa = operaciones.InversaMatriz3x3(matriz);
+         float[,] matrizB = new float[,] {
+             { 7, 8 },
+             { 9, 10 },
+             { 11, 12 }
+         };
 
-             // Mostramos el resultado en el TextMeshPro
-             string resultadoInversa = "InversaMatriz3x3:\n";
-             for (int i = 0; i < 3; i++) {
-                 for (int j = 0; j < 3; j++) {
-                     resultadoInversa += inversa[i, j] + " ";
-                 }
-                 resultadoInversa += "\n";
+         float[,] resultadoMultiMatrices = operaciones.MultiplicarMatrices(matrizA, matrizB);
+         string resultadoString = $"la multiplicación de matrices:\n";
+         // Recorrer la matriz resultado y añadir sus elementos a la cadena
+         for (int i = 0; i < resultadoMultiMatrices.GetLength(0); i++) {
+             for (int j = 0; j < resultadoMultiMatrices.GetLength(1); j++) {
+                 resultadoString += resultadoMultiMatrices[i, j] + " ";
              }
-             resultado.text = resultadoInversa;
-         } catch (InvalidOperationException ex) {
-             // En caso de que la matriz no tenga inversa
-             resultado.text = ex.Message;
+             resultadoString += "\n";
          }
+         resultado.text = resultadoString;
      }*/
+
+    //funciona, desde aqui se debe de modificar e ingresar los datos que quieras calcular
+    /*  public void InterseccionTresPlanos(OperacionesMatematicas operaciones) {
+          // Definimos tres planos como Vectores 4D (Ax + By + Cz + D = 0)
+          Vector4 plano1 = new Vector4(100, 74, 0, -5147);
+          Vector4 plano2 = new Vector4(1000, 561, 0, -39); 
+          Vector4 plano3 = new Vector4(80, 104, 123, -478); 
+
+         //chatpgt //sirve para que si donde llamamos el Intereseccion ocurre un problema me ejecute el siguiente y me lo guarde lo intenre corregir y me lance un mensaje
+          try {
+              Vector3 puntoInterseccion = operaciones.InterseccionTresPlanos(plano1, plano2, plano3);
+              resultado.text = $"Punto de intersección 3 Planos: ({puntoInterseccion.x}, {puntoInterseccion.y}, {puntoInterseccion.z})";
+          } catch (InvalidOperationException ex) {
+              // En caso de que los planos no se crucen en un punto único
+              resultado.text = ex.Message;
+          }
+      }1*/
+
+    //funciona, pero es inexacta, aqui se manipula la matriz para obtener el resutado al cacular en In Game :3
+    /*  public void InversaMatriz3x3(OperacionesMatematicas operaciones) {
+           //Definimos una matriz 3x3 para ejemplo
+           float[,] matriz = {
+               { 10, -4,  25 },
+               { 12,  -90,  44 },
+               { 200,  30, -10 }
+           };
+
+           try {
+               // Llamamos al método InversaMatriz3x3
+               float[,] inversa = operaciones.InversaMatriz3x3(matriz);
+
+               // Mostramos el resultado en el TextMeshPro
+               string resultadoInversa = "InversaMatriz3x3:\n";
+               for (int i = 0; i < 3; i++) {
+                   for (int j = 0; j < 3; j++) {
+                       resultadoInversa += inversa[i, j] + " ";
+                   }
+                   resultadoInversa += "\n";
+               }
+               resultado.text = resultadoInversa;
+           } catch (InvalidOperationException ex) {
+               // En caso de que la matriz no tenga inversa
+               resultado.text = ex.Message;
+           }
+       }*/
 
     #endregion Llamado a las operaciones
 
@@ -437,8 +451,7 @@ public class Calculadora : MonoBehaviour {
 
         //ACTIVAR ESTAS SI ES NECESARIO 
         float escalar = 0; // para la multiplicacion de matrices debo de modificar este valor por el escalar que quiiero multiplicar
-        Vector3 puntoLinea = new Vector3(0, 0, 0), direccionLinea = new Vector3(0, 0, 0), puntoPlano = new Vector3(0, 0, 0),
-         normalPlano = new Vector3(0, 0, 0), punto = new Vector3(0, 0, 0);
+
 
         //ACTIVAR SI ACTIVAS EL METODO DE LA OPERACION QUE HEREDA 
         //DE CALCULADORA, LAS HABILIDADES DE MI CARTA DE ENCANTAMIENTO AZUL,PAGO 25 MANAS Y LLAMO A....
@@ -454,18 +467,19 @@ public class Calculadora : MonoBehaviour {
             //Determinante3x3(operaciones, v1, v2, v3);
             // Descomposicion(operaciones, v1, v2);
             //Ortogonalizacion(operaciones, v1,v2);
-            // SumaMatrices(operaciones, result1, result2, result3, result4, result5, result6, result7, result8, result9);
-            //RestaMatrices(operaciones);
-            //MultiplicacionMatrices(operaciones);
             //ConvertirAHomogeneas(operaciones, v1);
+            // SumaMatrices(operaciones, result1, result2, result3, result4, result5, result6, result7, result8, result9);
+            //AnguloEntreVectores(operaciones, v1, v2);
+            //RestaMatrices(operaciones);
+            //MultiplicarMatrices(operaciones);
             //MultiplicarEscalar(operaciones, v1, escalar);
-            //Reflejar(operaciones, v1, v2);
-            //InterseccionLineaPlano(operaciones, puntoLinea, direccionLinea, puntoPlano, normalPlano);
-            // DistanciaPuntoPlano(operaciones, punto, puntoPlano, normalPlano);
-            //Rotacion2D(operaciones);
+            //Reflejar(operaciones);
+            // InterseccionLineaPlano(operaciones);
+            // DistanciaPuntoPlano(operaciones);
+            // Rotacion2D(operaciones);
             //Rotacion3D(operaciones);
             // ReflejoEscalar(operaciones);
-            //TransformacionRotacion(operaciones);
+            // TransformacionRotacion(operaciones);
             // MultiplicarMatrices(operaciones);
             //InterseccionTresPlanos(operaciones);
             //InversaMatriz3x3(operaciones);

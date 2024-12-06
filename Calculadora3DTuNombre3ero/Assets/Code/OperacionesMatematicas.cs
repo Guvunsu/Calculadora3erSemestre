@@ -187,6 +187,7 @@ public class OperacionesMatematicas : MonoBehaviour {
     //Angulo Entre Vectores :3
     public float AnguloEntreVectores(Vector3 v1, Vector3 v2) {
         // Producto punto
+        // ProductoPunto(v, n);
         float productoPunto = (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
 
         // Magnitudes de los vectores
@@ -204,14 +205,15 @@ public class OperacionesMatematicas : MonoBehaviour {
         return new Vector3(v.x * escalar, v.y * escalar, v.z * escalar);
     }
     public Vector3 Reflejar(Vector3 v, Vector3 n) {
-        // Calculamos el producto punto entre el vector y la normal del plano
+        // Calculamos el producto punto
+        // Entre el vector y la normal del plano
+       // ProductoPunto(v, n);
         float productoPunto = (v.x * n.x) + (v.y * n.y) + (v.z * n.z);
-
         // Reflejo del vector
         return new Vector3(
-            v.x - 1 * productoPunto * n.x,
-            v.y - 1 * productoPunto * n.y,
-            v.z - 1 * productoPunto * n.z
+            v.x - 2 * productoPunto * n.x,
+            v.y - 2 * productoPunto * n.y,
+            v.z - 2 * productoPunto * n.z
         );
     }
     public Vector3 InterseccionLineaPlano(Vector3 puntoLinea, Vector3 direccionLinea, Vector3 puntoPlano, Vector3 normalPlano) {
@@ -244,6 +246,7 @@ public class OperacionesMatematicas : MonoBehaviour {
         // Devolvemos la distancia
         return Mathf.Abs(productoPunto) / magnitudNormal;
     }
+    //modificar el vector 2d en 2d 
     public Matrix4x4 Rotacion2D(float angulo) {
         float radianes = angulo * Mathf.Deg2Rad;
         Matrix4x4 rotacion = new Matrix4x4();

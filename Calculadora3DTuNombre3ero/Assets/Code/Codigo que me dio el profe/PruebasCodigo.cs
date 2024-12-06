@@ -150,3 +150,25 @@
 //    panel.SetActive(true);
 
 //}
+
+//// Para dibujar en Gizmos
+//private Vector3? vectorA = null;
+//private Vector3? vectorB = null;
+
+//LineRnederer
+//using UnityEngine;
+
+//public Color color;
+////public Material material;
+//private Transform head;
+//private Transform sphere;
+#region linerenderer
+//public void lineRender() {
+//    sphere = transform.Find("Sphere");
+//    sphere.localScale = 0.3f * Vector3.one;
+//    head = transform.Find("Head");
+//    head.localScale = 0.25f * Vector3.one;
+//    GetComponent<LineRenderer>().widthMultiplier = 0.1f;
+//    GetComponent<LineRenderer>().positionCount = 2;
+//}
+#endregion linerenderer
