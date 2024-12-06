@@ -457,7 +457,7 @@ public class Calculadora : MonoBehaviour {
             // SumaMatrices(operaciones, result1, result2, result3, result4, result5, result6, result7, result8, result9);
             //RestaMatrices(operaciones);
             //MultiplicacionMatrices(operaciones);
-            ConvertirAHomogeneas(operaciones, v1);
+            //ConvertirAHomogeneas(operaciones, v1);
             //MultiplicarEscalar(operaciones, v1, escalar);
             //Reflejar(operaciones, v1, v2);
             //InterseccionLineaPlano(operaciones, puntoLinea, direccionLinea, puntoPlano, normalPlano);
@@ -477,49 +477,7 @@ public class Calculadora : MonoBehaviour {
     private void Start() {
         _historialTMP.text = "R=";
         inputField.onEndEdit.AddListener(ProcesarInputUsuario);
-        //InitializeUI();
-        //lineRender();
     }
-    #endregion
-
-    #region UI Management
-    //public void InitializeUI() {
-    //    operationButtons[0].onClick.AddListener(() => MostrarPanel(panelSumaVectores));
-    //    operationButtons[1].onClick.AddListener(() => MostrarPanel(panelRestarVectores));
-    //    operationButtons[2].onClick.AddListener(() => MostrarPanel(panelProductoPunto));
-    //    operationButtons[3].onClick.AddListener(() => MostrarPanel(panelProductoCruz));
-    //    operationButtons[4].onClick.AddListener(() => MostrarPanel(panelMagnitud));
-    //    operationButtons[5].onClick.AddListener(() => MostrarPanel(panelNormalizar));
-    //    operationButtons[6].onClick.AddListener(() => MostrarPanel(panelTransponer));
-    //    operationButtons[7].onClick.AddListener(() => MostrarPanel(panelDeterminante3x3));
-    //    operationButtons[8].onClick.AddListener(() => MostrarPanel(panelDescomposicion));
-    //    operationButtons[9].onClick.AddListener(() => MostrarPanel(panelOrtogonalizacion));
-    //    operationButtons[10].onClick.AddListener(() => MostrarPanel(panelSumarMatrices));
-    //    operationButtons[11].onClick.AddListener(() => MostrarPanel(panelAnguloEntreVectores));
-    //    operationButtons[12].onClick.AddListener(() => MostrarPanel(panelMultiplicarEscalar));
-    //    operationButtons[13].onClick.AddListener(() => MostrarPanel(panelReflejar));
-    //    operationButtons[14].onClick.AddListener(() => MostrarPanel(panelInterseccionLineaPlano));
-    //    operationButtons[15].onClick.AddListener(() => MostrarPanel(panelDistanciaPuntoPlano));
-    //    operationButtons[16].onClick.AddListener(() => MostrarPanel(panelRotacion2D));
-    //    operationButtons[17].onClick.AddListener(() => MostrarPanel(panelRotacion3D));
-    //    operationButtons[18].onClick.AddListener(() => MostrarPanel(panelConvertirAHomogeneas));
-    //    operationButtons[19].onClick.AddListener(() => MostrarPanel(panelReflejoEscalar));
-    //    operationButtons[20].onClick.AddListener(() => MostrarPanel(panelTransformacionRotacion));
-    //    operationButtons[21].onClick.AddListener(() => MostrarPanel(panelMultiplicarMatrices));
-    //    operationButtons[22].onClick.AddListener(() => MostrarPanel(panelRestarMatrices));
-    //    operationButtons[23].onClick.AddListener(() => MostrarPanel(panelInterseccionTresPlanos));
-    //    operationButtons[24].onClick.AddListener(() => MostrarPanel(panelInversaMatriz3x3));
-
-
-
-    //}
-
-    public void MostrarPanel(GameObject panel) {
-        panel.SetActive(true);
-
-    }
-
-
     #endregion
 
     #region Input Processing
